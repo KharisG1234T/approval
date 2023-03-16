@@ -94,6 +94,7 @@ class Report extends CI_Controller {
         $data['title'] = 'Detail Laporan Pengaduan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['report'] = $this->Report_model->getById($id);
+        $data['reports'] = $this->Report_model->getStatus();
             
         $this->load->view('templates/admin_header', $data);
         $this->load->view('templates/admin_sidebar');

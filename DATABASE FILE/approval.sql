@@ -12,12 +12,65 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Dumping structure for table approval.barangpeminjaman
+CREATE TABLE IF NOT EXISTS `barangpeminjaman` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `sku` varchar(25) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `qty` int(15) NOT NULL,
+  `harga` int(15) NOT NULL,
+  `jumlah` int(15) NOT NULL,
+  `stok_po` varchar(10) NOT NULL,
+  `maks_delivery` date NOT NULL,
+  `id_peminjaman` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping database structure for adudu
-CREATE DATABASE IF NOT EXISTS `adudu` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `adudu`;
+-- Dumping data for table approval.barangpeminjaman: ~5 rows (approximately)
+/*!40000 ALTER TABLE `barangpeminjaman` DISABLE KEYS */;
+INSERT INTO `barangpeminjaman` (`id`, `sku`, `nama`, `qty`, `harga`, `jumlah`, `stok_po`, `maks_delivery`, `id_peminjaman`) VALUES
+	(1, '', 'Sampel', 2, 50000, 100000, '', '2023-03-08', 1),
+	(2, '', 'Tester', 3, 1000, 2000, '', '2023-03-10', 1),
+	(3, '', 'Sampel', 5, 1000, 5000, '', '2023-03-08', 2),
+	(4, '', 'Tester', 2, 2000, 4000, '', '2023-03-09', 2),
+	(5, '', 'COntoh', 3, 1000, 3000, '', '2023-03-08', 3);
+/*!40000 ALTER TABLE `barangpeminjaman` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user
+-- Dumping structure for table approval.cabang
+CREATE TABLE IF NOT EXISTS `cabang` (
+  `id_cabang` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nama_cabang` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id_cabang`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table approval.cabang: ~3 rows (approximately)
+/*!40000 ALTER TABLE `cabang` DISABLE KEYS */;
+INSERT INTO `cabang` (`id_cabang`, `nama_cabang`) VALUES
+	(5, 'CV Solusi Arya Prima');
+/*!40000 ALTER TABLE `cabang` ENABLE KEYS */;
+
+-- Dumping structure for table approval.peminjaman
+CREATE TABLE IF NOT EXISTS `peminjaman` (
+  `id_peminjaman` int(15) unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int(15) NOT NULL,
+  `id_cabang` int(15) NOT NULL,
+  `from` varchar(25) NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `number` int(15) NOT NULL,
+  `closingdate` date NOT NULL,
+  `note` varchar(25) NOT NULL,
+  PRIMARY KEY (`id_peminjaman`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table approval.peminjaman: ~3 rows (approximately)
+/*!40000 ALTER TABLE `peminjaman` DISABLE KEYS */;
+INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `id_cabang`, `from`, `date`, `number`, `closingdate`, `note`) VALUES
+	(1, 1, 0, '', '07/03/2023', 3, '2023-03-10', 'Urgent'),
+	(2, 1, 5, 'Pusat 1', '07/03/2023', 3, '2023-03-11', 'Urgent'),
+	(3, 1, 5, 'Pusat 1', '08/03/2023', 3, '2023-03-10', 'Test');
+/*!40000 ALTER TABLE `peminjaman` ENABLE KEYS */;
+
+-- Dumping structure for table approval.user
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -28,24 +81,38 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_active` int(1) NOT NULL,
   `date_created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user: ~2 rows (approximately)
+-- Dumping data for table approval.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 	(27, 'Admin Raizel', 'admin@mail.com', 'Screenshot_1.png', '$2y$10$.9Jgo7HSNyrg9nCJVv5uh.EpgVulkqzZDnG3gBXc5ypSKCd1pViim', 1, 1, 1599504982),
-	(28, 'Tester', 'web1.hitechcomputer@gmail.com', 'logo_bw.jpg', '$2y$10$E1UJS4ZRni0qlGUree76H.hzDCAf9gUEfghvVq.A4OByZaHc02CXa', 2, 1, 1678262755);
+	(29, 'Tester', 'web1.hitechcomputer@gmail.com', 'logo_bw1.jpg', '$2y$10$6vmR.Ia65RJvidhIEKWOVuhE.igclGpTWkTko9SVy3fQe9DSiHbBy', 2, 1, 1678265073);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_access_menu
+-- Dumping structure for table approval.userpeminjaman
+CREATE TABLE IF NOT EXISTS `userpeminjaman` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `nama` varchar(25) NOT NULL,
+  `approvedate` date NOT NULL,
+  `id_peminjaman` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table approval.userpeminjaman: ~0 rows (approximately)
+/*!40000 ALTER TABLE `userpeminjaman` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userpeminjaman` ENABLE KEYS */;
+
+-- Dumping structure for table approval.user_access_menu
 CREATE TABLE IF NOT EXISTS `user_access_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_access_menu: ~7 rows (approximately)
+-- Dumping data for table approval.user_access_menu: ~8 rows (approximately)
 /*!40000 ALTER TABLE `user_access_menu` DISABLE KEYS */;
 INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 	(1, 1, 1),
@@ -54,27 +121,31 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 	(16, 2, 4),
 	(17, 1, 5),
 	(20, 1, 3),
-	(21, 2, 3);
+	(21, 2, 3),
+	(22, 2, 6),
+	(26, 1, 6),
+	(28, 1, 4);
 /*!40000 ALTER TABLE `user_access_menu` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_menu
+-- Dumping structure for table approval.user_menu
 CREATE TABLE IF NOT EXISTS `user_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_menu: ~5 rows (approximately)
+-- Dumping data for table approval.user_menu: ~6 rows (approximately)
 /*!40000 ALTER TABLE `user_menu` DISABLE KEYS */;
 INSERT INTO `user_menu` (`id`, `menu`) VALUES
 	(1, 'Admin'),
 	(2, 'Menu'),
 	(3, 'User'),
-	(4, 'Report Form'),
-	(5, 'Report');
+	(4, 'Form Pengajuan'),
+	(5, 'Pusat Data Pengajuan'),
+	(6, 'Status Pengajuan User');
 /*!40000 ALTER TABLE `user_menu` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_report
+-- Dumping structure for table approval.user_report
 CREATE TABLE IF NOT EXISTS `user_report` (
   `id` varchar(64) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -87,28 +158,47 @@ CREATE TABLE IF NOT EXISTS `user_report` (
   `type` text NOT NULL,
   `date_reported` int(11) NOT NULL,
   `file` varchar(64) NOT NULL DEFAULT 'default.jpg',
+  `idstatus` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_report: ~1 rows (approximately)
+-- Dumping data for table approval.user_report: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_report` DISABLE KEYS */;
+INSERT INTO `user_report` (`id`, `name`, `nik`, `rt`, `rw`, `village`, `title`, `description`, `type`, `date_reported`, `file`, `idstatus`) VALUES
+	('640ab132c7840', 'Tester', '21312142312', 1, 4, 'aadafasf', 'dadwqad', 'adacqwd', 'Bantuan Sosial', 1678422322, '640ab132c7840.jpg', '1');
 /*!40000 ALTER TABLE `user_report` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_role
+-- Dumping structure for table approval.user_report_status
+CREATE TABLE IF NOT EXISTS `user_report_status` (
+  `idstat` varchar(64) NOT NULL,
+  `status` varchar(64) NOT NULL,
+  PRIMARY KEY (`idstat`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table approval.user_report_status: ~4 rows (approximately)
+/*!40000 ALTER TABLE `user_report_status` DISABLE KEYS */;
+INSERT INTO `user_report_status` (`idstat`, `status`) VALUES
+	('1', 'Belum Diproses'),
+	('2', 'Diproses'),
+	('3', 'Ditolak'),
+	('4', 'Selesai');
+/*!40000 ALTER TABLE `user_report_status` ENABLE KEYS */;
+
+-- Dumping structure for table approval.user_role
 CREATE TABLE IF NOT EXISTS `user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_role: ~2 rows (approximately)
+-- Dumping data for table approval.user_role: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
 INSERT INTO `user_role` (`id`, `role`) VALUES
 	(1, 'Administrator'),
 	(2, 'Member');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_sub_menu
+-- Dumping structure for table approval.user_sub_menu
 CREATE TABLE IF NOT EXISTS `user_sub_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) NOT NULL,
@@ -117,33 +207,39 @@ CREATE TABLE IF NOT EXISTS `user_sub_menu` (
   `icon` varchar(128) NOT NULL,
   `is_active` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_sub_menu: ~10 rows (approximately)
+-- Dumping data for table approval.user_sub_menu: ~15 rows (approximately)
 /*!40000 ALTER TABLE `user_sub_menu` DISABLE KEYS */;
 INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active`) VALUES
 	(1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 1),
-	(2, 3, 'My Profile', 'user', 'fas fa-fw fa-user', 1),
-	(3, 3, 'Update Profile', 'user/edit', 'fas fa-fw fa-user-edit', 1),
+	(2, 3, 'Profil Saya', 'user', 'fas fa-fw fa-user', 1),
+	(3, 3, 'Perbarui Profil', 'user/edit', 'fas fa-fw fa-user-edit', 1),
 	(4, 2, 'Menu Management', 'menu', 'fas fa-fw fa-folder', 1),
 	(5, 2, 'Submenu Management', 'menu/submenu', 'fas fa-fa-fw fa-folder-open', 1),
-	(6, 1, 'Access Authority', 'admin/role', 'fas fa-fw fa-user-tie', 1),
-	(7, 3, 'Change Password', 'user/changepassword', 'fas fa-fw fa-key', 1),
-	(9, 4, 'Report', 'report/addreport', 'fas fa-fw fa-headset', 1),
-	(10, 5, 'Report Data', 'report', 'fas fa-fw fa-file-alt', 1),
-	(11, 1, 'User Data', 'admin/datamember', 'fas fa-fw fa-users', 1);
+	(6, 1, 'Tingkatan Akses', 'admin/role', 'fas fa-fw fa-user-tie', 1),
+	(7, 3, 'Ganti Password', 'user/changepassword', 'fas fa-fw fa-key', 1),
+	(9, 4, 'Ajukan Peminjaman', 'report/addreport', 'fas fa-fw fa-headset', 1),
+	(10, 5, 'Semua Data Masuk', 'report', 'fas fa-fw fa-file-alt', 1),
+	(11, 1, 'Data User', 'admin/datamember', 'fas fa-fw fa-users', 1),
+	(12, 5, 'Pengajuan Baru Masuk', 'admin', 'fas fa-fw fa-file-alt', 1),
+	(13, 5, 'Pengajuan OnProses', 'admin', 'fas fa-fw fa-file-alt', 1),
+	(14, 5, 'Pengajuan Gagal', 'admin', 'fas fa-fw fa-file-alt', 1),
+	(15, 5, 'Pengajuan Selesai', 'admin', 'fas fa-fw fa-file-alt', 1),
+	(16, 6, 'Status Pengaduan', 'report/statusreport', 'fas fa-fw fa-file-alt', 1),
+	(17, 1, 'Data Cabang', 'cabang/index', 'fa fa-flag', 1);
 /*!40000 ALTER TABLE `user_sub_menu` ENABLE KEYS */;
 
--- Dumping structure for table adudu.user_token
+-- Dumping structure for table approval.user_token
 CREATE TABLE IF NOT EXISTS `user_token` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(128) NOT NULL,
   `token` varchar(128) NOT NULL,
   `date_created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table adudu.user_token: ~0 rows (approximately)
+-- Dumping data for table approval.user_token: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_token` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_token` ENABLE KEYS */;
 

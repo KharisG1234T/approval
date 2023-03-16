@@ -10,12 +10,14 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+	<div class="col-lg-7">
+        <?= form_error('nama_cabang', '<div class="alert alert-danger" role="alert">', '</div>'); ?>
+        <?= $this->session->flashdata('message'); ?>
+    </div>
 
-    <?= $this->session->flashdata('message'); ?>
-
-    <div class="card shadow mb-4">
+    <div class="card col-lg-7 shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Data Pengaduan</h6>
+            <h6 class="m-0 font-weight-bold text-primary"><a href="" data-toggle="modal" data-target="#newCabangModal"><i class="fas fa-plus"></i> Cabang</a></h6>
         </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -23,29 +25,19 @@
                     <thead class="thead-dark">
                                 <tr>
                                     <th>#</th>
-                                    <th>Nama</th>
-                                    <th>NIK</th>
-                                    <th>Judul Laporan</th>
-                                    <th>Jenis Laporan</th>
-                                    <th>Dibuat Pada</th>
-                                    <th>Keterangan</th>
+                                    <th>Nama Cabang</th>
                                     <th>Action</th>
                                 </tr>
                         </thead>
                     <tbody>
                         <?php $index = 1; ?>
-                        <?php foreach($reports as $r) : ?>
+                        <?php foreach($cabangs as $cab) : ?>
                             <tr>
-                                <td><?= $index; ?></td>
-                                <td><?= $r->name; ?></td>
-                                <td><?= $r->nik; ?></td>
-                                <td><?= $r->title; ?></td>
-                                <td><?= $r->type; ?></td>
-                                <td><?= date('d F Y' , $r->date_reported); ?></td>
-                                <td><?= $r->status; ?></td>
+                            	<td><?= $index; ?></td>
+                                <td><?php echo $cab['nama_cabang']?></td>
                                 <td>
-                                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('report/detail/'.$r->id); ?>">Detail</a>
-                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('report/deletereport/'.$r->id); ?>')">Hapus</a>
+									<a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/'.$cab['id_cabang']); ?>">Ganti</a>
+                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('cabang/deletecabang/'.$cab['id_cabang']); ?>')">Hapus</a>
                                 </td>
                             </tr>
                         <?php $index++; ?>
@@ -60,6 +52,32 @@
 
 </div>
 <!-- End of Main Content -->
+
+<!-- Modal add new cabang-->
+<div class="modal fade" id="newCabangModal" tabindex="-1" role="dialog" aria-labelledby="newCabangModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newCabangModalLabel">Tambah Cabang Baru</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- form -->
+      <form action="<?= site_url('cabang/addcabang'); ?>" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" class="form-control" id="nama_cabang" name="nama_cabang" placeholder="Nama Cabang">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-success">Tambah</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 <!-- modal delete -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

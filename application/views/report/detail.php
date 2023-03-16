@@ -56,10 +56,18 @@
                         <input class="form-control" type="text" name="date_reported" value="<?= date('d F Y' , $report['date_reported']); ?>" readonly>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                    <?php foreach($reports as $reps) : ?>
+                        <label for="date_reported">Status Pengaduan</label>
+                        <input class="form-control" type="text" name="status" value="<?= $reps->status; ?>" readonly>
+                    <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <a target="_blank" class="badge badge-primary" style="font-size:16px;" href="<?= base_url('assets/img/report/').$report['file']; ?>"><i class="fas fa-image"></i> Check Attachment</a>
-                <input type="submit" name="idstatus" value="sub1" onclick="show(this)">
+                <input type="submit" name="idstatus" value="Ubah Status" onclick="show(this)">
             </div>
         </div>
     </div>
