@@ -1,94 +1,98 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Peminjaman extends CI_Controller
-{
-  function __construct()
-  {
-    parent::__construct();
-    $this->load->model(array('Mod_peminjaman', 'Mod_cabang', 'Mod_userpeminjaman', 'Mod_barangpeminjaman'));
-    // $this->load->model('Mod_cabang');
-    // $this->load->model('Mod_userpeminjaman');
-    // $this->load->model('Mod_barangpeminjaman');
-  }
+class Peminjaman extends CI_Controller {
 
-  public function index()
-  {
-    $this->template->load('layoutbackend', 'peminjaman');
-  }
-
-  public function dropdowncabang()
-  {
-    $cabangs = $this->Mod_cabang->get_cabanglist();
-    echo json_encode($cabangs);
-  }
-
-  public function add()
-  {
-    $cabangs = $this->Mod_cabang->get_cabanglist();
-    $this->template->load('layoutbackend', 'tambah_peminjaman', $cabangs);
-  }
-
-  public function insert()
-  {
-    $dataPeminjaman = array(
-      'id_cabang' => $this->input->post('direction'),
-      'id_user' => $this->input->post('userId'),
-      'from' => $this->input->post('from'),
-      'date' => $this->input->post('date'),
-      'number' => $this->input->post('number'),
-      'closingdate' => $this->input->post('closingDate'),
-      'note' => $this->input->post('note'),
-    );
-
-    $peminjamanId = $this->Mod_peminjaman->insert_peminjaman('peminjaman', $dataPeminjaman);
-
-    $barang = $this->input->post('barang');
-    foreach ($barang as $item) {
-      var_dump($item);
-      echo ($item['name']);
-      $data = array(
-        'id_peminjaman' => $peminjamanId,
-        'sku' => '',
-        'nama' => $item['name'],
-        'harga' => $item["price"],
-        'qty' => $item["qty"],
-        'jumlah' => $item["total"],
-        'stok_po' => '',
-        'maks_delivery' => $item['maks'],
-      );
-      $this->Mod_barangpeminjaman->insert_barangpeminjaman('barangpeminjaman', $data);
-    }
-    echo "Data peminjaman berhasil disimpan";
-  }
-
-  public function ajax_list()
-  {
-    ini_set('memory_limit', '512M');
-    set_time_limit(3600);
-    $lists = $this->Mod_peminjaman->get_datatables();
-    $data = array();
-    $no = $_POST['start'];
-    foreach ($lists as $list) {
-      $no++;
-      $row = array();
-      $row[] = $list->full_name;
-      $row[] = $list->nama_cabang;
-      $row[] = $list->from;
-      $row[] = $list->date;
-      $row[] = $list->closingdate;
-      $row[] = $list->note;
-      $data[] = $row;
+    public function __construct()
+    {
+        parent::__construct();
+        // load model
+        $this->load->model(array('Barangpeminjaman_model' , 'Userpeminjaman_model' , 'Peminjaman_model'));
     }
 
-    $output = array(
-      "draw" => $_POST['draw'],
-      "recordsTotal" => $this->Mod_peminjaman->count_all(),
-      "recordsFiltered" => $this->Mod_peminjaman->count_filtered(),
-      "data" => $data,
-    );
-    
-    //output to json format
-    echo json_encode($output);
-  }
+    public function index()
+    {
+        $data['title'] = 'Form Pengajuan Peminjaman';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['peminjaman'] = $this->Peminjaman_model->getAll();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('templates/admin_sidebar');
+        $this->load->view('templates/admin_topbar', $data);
+        $this->load->view('peminjaman/peminjaman', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+      public function add()
+    {
+      $cabangs = $this->Cabang_model->get_cabanglist();
+      $this->template->load('layoutbackend', 'tambah_peminjaman', $cabangs);
+    }
+
+    // add cabang
+    public function addcabang()
+    {
+        $data['title'] = 'Daftar Cabang';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['nama_cabang'] = $this->db->get('cabang')->result_array();
+
+        $this->form_validation->set_rules('nama_cabang', 'Nama Cabang', 'required', [
+            'required' => 'Nama Cabang harus di isi !'
+        ]);
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('templates/admin_sidebar');
+            $this->load->view('templates/admin_topbar', $data);
+            $this->load->view('cabang/index', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $this->db->insert('cabang', ['nama_cabang' => $this->input->post('nama_cabang')]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Cabang baru berhasil ditambahkan!</div>');
+            redirect('cabang');
+        }
+    }
+
+    public function editcabang($id_cabang = null)
+    {   
+        $this->form_validation->set_rules('nama_cabang', 'Nama Cabang', 'required', [
+            'required' => 'Nama Cabang tidak boleh kosong !'
+        ]);
+        
+        if ($this->form_validation->run() == false) {
+            $data['title'] = 'Cabang Edit';
+            $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            $data['nama_cabang'] = $this->db->get_where('cabang', ['id_cabang' => $id_cabang])->row_array();
+
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('templates/admin_sidebar');
+            $this->load->view('templates/admin_topbar', $data);
+            $this->load->view('cabang/edit_cabang', $data);
+            $this->load->view('templates/admin_footer');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Gagal merubah cabang!</div>');
+        } else {
+            $data = [
+                'id_cabang' => $this->input->post('id_cabang'),
+                'nama_cabang' => $this->input->post('nama_cabang')
+            ];
+
+            $this->db->update('cabang', $data, ['id_cabang' => $id_cabang]);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Cabang berhasil dirubah !</div>');
+            redirect('cabang');
+        }
+    }
+
+    // delete cabang
+    public function deletecabang($id_cabang = null)
+    {
+        if (!isset($id_cabang)) show_404();
+
+        $cabangs = $this->Cabang_model;
+        if ($cabangs->delete($id_cabang)) {
+            redirect('cabang');
+        }
+    }
 }
