@@ -21,6 +21,9 @@
   <!-- Custom styles for this page -->
   <link href="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+  <!-- Jquery ajax -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
 </head>
 
 <body id="page-top">

@@ -12,15 +12,17 @@
           <!-- /.card-header -->
           <div class="card-body">
             <form id="form" class="form-horizontal">
-              <input type="hidden" value="" name="id" />
+              <input type="hidden" value="<?= $this->session->userdata('id')?>" name="userid" id="userid" />
               <div class="card-body">
                 <div class="form-group row ">
                   <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                     <div class="kosong">
                       <select class="form-control" id="direction" name="direction" require>
                         <option value="">Pilih Cabang ...</option>
+                        <?php foreach ($cabangs as $cabang) { ?>
+                          <option value="<?= $cabang['id_cabang'] ?>"><?= $cabang['nama_cabang'] ?></option>
+                        <?php } ?>
                       </select>
-                      <input type="hidden" class="form-control" name="user" id="user" value="<?= $this->session->userdata('id_user'); ?>">
                     </div>
                   </div>
                   <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
@@ -98,24 +100,6 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
   $(document).ready(function() {
-
-    $.ajax({
-      type: "GET",
-      url: "dropdowncabang",
-      cache: false,
-      success: function(data) {
-        const direction = $("#direction");
-        const cabang = JSON.parse(data);
-        cabang.forEach(item => {
-          $("<option/>", {
-            value: item.id_cabang,
-            text: item.nama_cabang
-          }).appendTo(direction);
-        })
-        console.log('data', JSON.parse(data));
-      }
-    });
-
     var no = 1;
 
     $('#tambah').click(function() {
@@ -152,7 +136,7 @@
       }
 
       const direction = $('#direction').val();
-      const userId = $('#user').val()
+      const userId = $('#userid').val()
       const date = $('#date').val()
       const from = $('#from').val()
       const number = $('#number').val()
@@ -175,12 +159,11 @@
         cache: false,
         data: payload,
         url: 'insert',
-      }).success(function(data) {
+      })
+      .done(function(data) {
         const redirectUrl = $('#url_peminjaman').val()
         window.location = `${redirectUrl}`;
-
       })
-      console.log('payload', payload)
     })
   });
 </script>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Userpeminjaman extends CI_Model
+class Userpeminjaman_model extends CI_Model
 {
 	
     public function getAll()
