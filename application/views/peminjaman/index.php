@@ -48,8 +48,8 @@
                   <td><?= $item['closingdate']; ?></td>
                   <td><?= $item['note']; ?></td>
                   <td>
-                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('admin/detailmember/' . $item['id_peminjaman']); ?>">Detail</a>
-                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('admin/editmember/' . $item['id_peminjaman']); ?>">Perbarui</a>
+                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('peminjaman/detail/' . $item['id_peminjaman']); ?>">Detail</a>
+                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/edit/' . $item['id_peminjaman']); ?>">Perbarui</a>
                     <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('peminjaman/delete/' . $item['id_peminjaman']); ?>')">Hapus</a>
                   </td>
                 </tr>

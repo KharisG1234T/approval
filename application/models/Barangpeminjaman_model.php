@@ -9,18 +9,23 @@ class Barangpeminjaman_model extends CI_Model
         return $this->db->get('barangpeminjaman')->result_array();
     }
 
-    public function getById($id_bp)
+    public function getAllBy($id_peminjaman)
     {
-        return $this->db->get_where('barangpeminjaman', ['id_bp' => $id_bp])->row_array();
+        return $this->db->where('id_peminjaman', $id_peminjaman)->get('barangpeminjaman')->result_array();
     }
+
+    // public function getById($id_bp)
+    // {
+    //     return $this->db->get_where('barangpeminjaman', ['id_bp' => $id_bp])->row_array();
+    // }
 
     public function save($data)
     {
         return $this->db->insert('barangpeminjaman', $data);
     }
 
-    public function delete($id_bp)
+    public function delete($id)
     {
-        return $this->db->delete('barangpeminjaman', ['id_bp' => $id_bp]);
+        return $this->db->delete('barangpeminjaman', ['id' => $id]);
     }
 }
