@@ -48,9 +48,9 @@
                   <td><?= $item['closingdate']; ?></td>
                   <td><?= $item['note']; ?></td>
                   <td>
-                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('peminjaman/detail/' . $item['id_peminjaman']); ?>">Detail</a>
-                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/edit/' . $item['id_peminjaman']); ?>">Perbarui</a>
-                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('peminjaman/delete/' . $item['id_peminjaman']); ?>')">Hapus</a>
+                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('peminjaman/detail/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-eye"></i> Detail</a>
+                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/edit/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-pen"></i> Perbarui</a>
+                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('peminjaman/delete/' . $item['id_peminjaman']); ?>')"><i class="fas fa fa-trash"></i> Hapus</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
