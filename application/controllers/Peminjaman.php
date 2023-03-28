@@ -34,7 +34,7 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/tambah_peminjaman', $data);
+    $this->load->view('peminjaman/sales/tambah_peminjaman', $data);
     $this->load->view('templates/admin_footer');
   }
 
@@ -96,7 +96,7 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/edit_peminjaman', $data);
+    $this->load->view('peminjaman/sales/edit_peminjaman', $data);
     $this->load->view('templates/admin_footer');
   }
 
@@ -109,7 +109,7 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/detail_peminjaman', $data);
+    $this->load->view('peminjaman/sales/detail_peminjaman', $data);
     $this->load->view('templates/admin_footer');
   }
 
