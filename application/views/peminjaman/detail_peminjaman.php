@@ -6,7 +6,7 @@
         <div class="card">
           <div class="card-header bg-light">
             <div class="text-center">
-              <h3 class="">FORM PEMINJAMAN DATA PUSAT</h3>
+              <h3 class="">DETAIL PEMINJAMAN DATA PUSAT</h3>
             </div>
           </div>
           <!-- /.card-header -->
@@ -40,13 +40,13 @@
               </div>
               <div class="form-group row">
                 <div class="col col-10 ml-auto">
-                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari <span id="">XXXXXX-XXXXXX-XXXXXX</span></p>
+                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12 mr-auto">
                   <div class="table-responsive">
-                    <table class="table" id="dynamic">
+                    <table class="table table-bordered" id="dynamic">
                       <thead>
                         <tr>
                           <td>Nomor</td>
@@ -58,9 +58,11 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <?php $total = 0 ?>
                         <?php foreach ($peminjaman['barangpeminjaman'] as $key => $barang) { ?>
+                          <?php $total = $total + $barang['jumlah'] ?>
                           <tr>
-                            <td><label>No. <?= $key + 1?></label></td>
+                            <td><label>No.<?= $key + 1 ?></label></td>
                             <td><input type="text" id="name1" placeholder="Nama Barang" class="form-control" readonly value="<?= $barang['nama'] ?>"></td>
                             <td><input type="number" id="qty1" placeholder="QTY" class="form-control" readonly value="<?= $barang['qty'] ?>"></td>
                             <td><input type="number" id="price1" placeholder="Harga Satuan" class="form-control" readonly value="<?= $barang['harga'] ?>"></td>
@@ -69,6 +71,12 @@
                           </tr>
                         <?php } ?>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="4" class="text-center font-weight-bold">Total</td>
+                          <td colspan="2" class="font-weight-bold text-center">Rp. <?= $total ?></td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>

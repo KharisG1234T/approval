@@ -44,7 +44,7 @@
               </div>
               <div class="form-group row">
                 <div class="col col-10 ml-auto">
-                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari <span id="">XXXXXX-XXXXXX-XXXXXX</span></p>
+                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
                 </div>
               </div>
               <div class="form-group row">
@@ -52,7 +52,7 @@
                   <div class="table-responsive">
                     <!-- data barang -->
                     <input type="hidden" data-barang='<?= json_encode($peminjaman['barangpeminjaman']) ?>' id="barangpeminjaman">
-                    <table class="table" id="dynamic">
+                    <table class="table table-bordered" id="dynamic">
                       <thead>
                         <tr>
                           <td>Nomor</td>
@@ -67,6 +67,12 @@
                       <tbody id="dynamic">
 
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="4" class="text-center font-weight-bold">Total</td>
+                          <td colspan="3" class="font-weight-bold text-center">Rp. <span id="total"></span> </td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>
@@ -103,7 +109,35 @@
 </section>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+  // set total step two
+  function change() {
+    let total = 0;
+    const tbRow = document.getElementsByClassName("tb_row");
+    for (let i = 1; i <= tbRow.length; i++) {
+      let data = $(`#total${i}`).val()
+      total = total + parseInt(data ? data : 0);
+    }
+    $('#total').text(total)
+  }
+
+  function getTotalFromQty(e) {
+    const index = e.id.replace(/qty/, "")
+    const qty = e.value;
+    const price = $(`#price${index}`).val();
+    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    change()
+  }
+
+  function getTotalFromPrice(e) {
+    const index = e.id.replace(/price/, "")
+    const price = e.value;
+    const qty = $(`#qty${index}`).val();
+    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    change()
+  }
+
   $(document).ready(function() {
+
     var no = 1;
 
     const barangPeminjaman = $('#barangpeminjaman');
@@ -113,12 +147,12 @@
     barangs.forEach((item, no) => {
       no = no + 1
       $('#dynamic').append(`
-        <tr id="row${no}">
-          <td><label>No. ${no}</label></td> 
+        <tr id="row${no}" class="tb_row">
+          <td><label>No.${no}</label></td> 
           <td><input type="text" id="name${no}" placeholder="Nama Barang" class="form-control" value="${item.nama}" required />
-          </td> <td><input type="number" placeholder="QTY" id="qty${no}" class="form-control" value="${item.qty}" required /></td> 
-          <td><input type="number" placeholder="Harga Satuan" id="price${no}" class="form-control" value="${item.harga}" required /></td> 
-          <td><input type="number" placeholder="Total" id="total${no}" class="form-control" value="${item.jumlah}" required /></td> 
+          </td> <td><input type="number" placeholder="QTY" id="qty${no}" onchange="getTotalFromQty(this)" class="form-control" value="${item.qty}" required /></td> 
+          <td><input type="number" placeholder="Harga Satuan" id="price${no}" onchange="getTotalFromPrice(this)" class="form-control" value="${item.harga}" required /></td> 
+          <td><input type="number" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" value="${item.jumlah}" required /></td> 
           <td><input type="date" placeholder="Maks Delivery" id="maks${no}" class="form-control date" value="${item.maks_delivery}" required /></td> 
           ${(no == 1 ? `<td><button type="button" id="tambah" class="btn btn- btn-success">Add <i class="fas fa-fw fa-plus"></i></button></td>` : `<td> <button type="button" id="${no}" class="btn btn-danger btn_remove">Hapus</button></td>`)}
         </tr>`);
@@ -129,16 +163,26 @@
     $('#tambah').click(function() {
       no++;
       $('#dynamic').append(`
-        <tr id="row${no}"> 
-          <td><label>No. ${no}</label></td>  
+        <tr id="row${no}" class="tb_row"> 
+          <td><label>No.${no}</label></td>  
           <td><input type="text" id="name${no}" placeholder="Nama Barang" class="form-control" required /></td> 
-          <td><input type="number" placeholder="QTY" id="qty${no}" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Harga Satuan" id="price${no}" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Total" id="total${no}" class="form-control" required /></td> 
+          <td><input type="number" placeholder="QTY" id="qty${no}" onchange="getTotalFromQty(this)" class="form-control" required /></td> 
+          <td><input type="number" placeholder="Harga Satuan" id="price${no}" onchange="getTotalFromPrice(this)" class="form-control" required /></td> 
+          <td><input type="number" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" required /></td> 
           <td><input type="date" placeholder="Maks Delivery" id="maks${no}" class="form-control date" required /></td> 
           <td> <button type="button" id="${no}" class="btn btn-danger btn_remove">Hapus</button></td>
         </tr>`);
     });
+
+    // set total step one
+    let total = 0;
+    const tbRow = document.getElementsByClassName("tb_row");
+    for (let i = 1; i <= tbRow.length; i++) {
+      let data = $(`#total${i}`).val()
+      total = total + parseInt(data ? data : 0);
+      console.log('total', total)
+    }
+    $('#total').text(total)
 
 
     // remote barang

@@ -44,13 +44,13 @@
               </div>
               <div class="form-group row">
                 <div class="col col-10 ml-auto">
-                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari <span id="">XXXXXX-XXXXXX-XXXXXX</span></p>
+                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12 mr-auto">
                   <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-bordered">
                       <thead>
                         <tr>
                           <td>Nomor</td>
@@ -63,16 +63,22 @@
                         </tr>
                       </thead>
                       <tbody id="dynamic">
-                        <tr>
-                          <td><label>No. 1</label></td>
+                        <tr class="tb_row">
+                          <td><label>No.1</label></td>
                           <td><input type="text" id="name1" placeholder="Nama Barang" class="form-control" required /></td>
-                          <td><input type="number" id="qty1" placeholder="QTY" class="form-control" required /></td>
-                          <td><input type="number" id="price1" placeholder="Harga Satuan" class="form-control" required /></td>
-                          <td><input type="number" id="total1" placeholder="Total" class="form-control" required /></td>
+                          <td><input type="number" id="qty1" placeholder="QTY" onchange="getTotalFromQty(this)" class="form-control" required /></td>
+                          <td><input type="number" id="price1" placeholder="Harga Satuan" onchange="getTotalFromPrice(this)" class="form-control" required /></td>
+                          <td><input type="number" id="total1" placeholder="Total" onchange="change()" readonly class="form-control" required /></td>
                           <td><input type="date" id="maks1" placeholder="Maks Delivery" class="form-control date" required /></td>
                           <td><button type="button" id="tambah" class="btn btn- btn-success">Add <i class="fas fa-fw fa-plus"></i></button></td>
                         </tr>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="4" class="text-center font-weight-bold">Total</td>
+                          <td colspan="3" class="font-weight-bold text-center">Rp. <span id="total"></span> </td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>
@@ -111,23 +117,49 @@
 </section>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+  // set total
+  function change() {
+    let total = 0;
+    const tbRow = document.getElementsByClassName("tb_row");
+    for (let i = 1; i <= tbRow.length; i++) {
+      let data = $(`#total${i}`).val()
+      total = total + parseInt(data ? data : 0);
+    }
+    $('#total').text(total)
+  }
+
+  function getTotalFromQty(e) {
+    const index = e.id.replace(/qty/, "")
+    const qty = e.value;
+    const price = $(`#price${index}`).val();
+    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    change()
+  }
+
+  function getTotalFromPrice(e) {
+    const index = e.id.replace(/price/, "")
+    const price = e.value;
+    const qty = $(`#qty${index}`).val();
+    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    change()
+  }
+
   $(document).ready(function() {
     var no = 1;
 
     $('#tambah').click(function() {
       no++;
       $('#dynamic').append(`
-        <tr id="row${no}"> 
-          <td><label>No. ${no}</label></td>  
+        <tr id="row${no}" class="tb_row"> 
+          <td><label>No.${no}</label></td>  
           <td><input type="text" id="name${no}" placeholder="Nama Barang" class="form-control" required /></td> 
-          <td><input type="number" placeholder="QTY" id="qty${no}" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Harga Satuan" id="price${no}" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Total" id="total${no}" class="form-control" required /></td> 
+          <td><input type="number" placeholder="QTY" id="qty${no}" onchange="getTotalFromQty(this)" class="form-control" required /></td> 
+          <td><input type="number" placeholder="Harga Satuan" id="price${no}"  onchange="getTotalFromPrice(this)" class="form-control" required /></td> 
+          <td><input type="number" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" required /></td> 
           <td><input type="date" placeholder="Maks Delivery" id="maks${no}" class="form-control date" required /></td> 
           <td> <button type="button" id="${no}" class="btn btn-danger btn_remove">Hapus</button></td>
         </tr>`);
     });
-
 
     $(document).on('click', '.btn_remove', function() {
       var button_id = $(this).attr("id");
@@ -154,6 +186,8 @@
           total,
           maks
         }]
+
+        console.log('barang', barang)
       }
 
       const direction = $('#direction').val();
