@@ -29,16 +29,10 @@
                     <div class="form-group">
                         <label for="role_id">Tingkatan User</label>
                         <select class="form-control" id="role_id" name="role_id">
-                            <option value="2">
-                            <?php
-                                if ($member['role_id'] == 2) {
-                                    echo 'Member';
-                                } else {
-                                    echo 'Admin';
-                                }
-                            ?>
-                            </option>
-                            <option value="1">Admin</option>
+                            <option value="">Akses Sebagai</option>
+                            <?php foreach ($menu as $m) : ?>
+                            <option value="<?= $m['id']; ?>"><?= $m['menu']; ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">

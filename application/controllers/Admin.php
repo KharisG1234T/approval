@@ -194,6 +194,8 @@ class Admin extends CI_Controller {
             $data['title'] = 'Perbarui User Data';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
             $data['member'] = $this->db->get_where('user', ['id' => $id])->row_array();
+            $data['roles'] = $this->db->get('user_role')->result_array();
+
             $this->load->view('templates/admin_header', $data);
             $this->load->view('templates/admin_sidebar');
             $this->load->view('templates/admin_topbar', $data);
