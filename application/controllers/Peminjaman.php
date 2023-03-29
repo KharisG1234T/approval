@@ -20,7 +20,20 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/index', $data);
+    $this->load->view('peminjaman/sales/index', $data);
+    $this->load->view('templates/admin_footer');
+  }
+
+  public function index2()
+  {
+    $data['title'] = 'List Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll();
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/index2', $data);
     $this->load->view('templates/admin_footer');
   }
 

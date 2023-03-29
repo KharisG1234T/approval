@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
--- Dumping data for table approval.user: ~2 rows (approximately)
+-- Dumping data for table approval.user: ~7 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 	(27, 'Admin Raizel', 'admin@mail.com', 'Screenshot_1.png', '$2y$10$.9Jgo7HSNyrg9nCJVv5uh.EpgVulkqzZDnG3gBXc5ypSKCd1pViim', 1, 1, 1599504982),
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `user_access_menu` (
   `role_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table approval.user_access_menu: ~10 rows (approximately)
+-- Dumping data for table approval.user_access_menu: ~20 rows (approximately)
 /*!40000 ALTER TABLE `user_access_menu` DISABLE KEYS */;
 INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 	(1, 1, 1),
@@ -129,7 +129,17 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 	(21, 2, 3),
 	(22, 2, 6),
 	(26, 1, 6),
-	(28, 1, 4);
+	(28, 1, 4),
+	(30, 3, 3),
+	(31, 3, 5),
+	(32, 4, 3),
+	(33, 4, 5),
+	(34, 5, 3),
+	(35, 5, 5),
+	(36, 6, 3),
+	(37, 6, 5),
+	(38, 7, 3),
+	(39, 7, 5);
 /*!40000 ALTER TABLE `user_access_menu` ENABLE KEYS */;
 
 -- Dumping structure for table approval.user_menu
@@ -196,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table approval.user_role: ~2 rows (approximately)
+-- Dumping data for table approval.user_role: ~7 rows (approximately)
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
 INSERT INTO `user_role` (`id`, `role`) VALUES
 	(1, 'Administrator'),
@@ -229,16 +239,15 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 	(5, 2, 'Submenu Management', 'menu/submenu', 'fas fa-fa-fw fa-folder-open', 1),
 	(6, 1, 'Tingkatan Akses', 'admin/role', 'fas fa-fw fa-user-tie', 1),
 	(7, 3, 'Ganti Password', 'user/changepassword', 'fas fa-fw fa-key', 1),
-	(9, 4, 'Ajukan Peminjaman', 'report/addreport', 'fas fa-fw fa-headset', 1),
-	(10, 5, 'Semua Data Masuk', 'report', 'fas fa-fw fa-file-alt', 1),
+	(9, 4, 'Form Peminjaman', 'peminjaman/index', 'fas fa-fw fa-headset', 1),
+	(10, 5, 'Data Pengajuan', 'peminjaman/index2', 'fas fa-fw fa-file-alt', 1),
 	(11, 1, 'Data User', 'admin/datamember', 'fas fa-fw fa-users', 1),
 	(12, 5, 'Pengajuan Baru Masuk', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(13, 5, 'Pengajuan OnProses', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(14, 5, 'Pengajuan Gagal', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(15, 5, 'Pengajuan Selesai', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(16, 6, 'Status Pengaduan', 'report/statusreport', 'fas fa-fw fa-file-alt', 1),
-	(17, 1, 'Data Cabang', 'cabang/index', 'fa fa-flag', 1),
-	(18, 4, 'Form Peminjaman', 'peminjaman/index', 'fas fa-fw fa-file-alt', 1);
+	(17, 1, 'Data Cabang', 'cabang/index', 'fa fa-flag', 1);
 /*!40000 ALTER TABLE `user_sub_menu` ENABLE KEYS */;
 
 -- Dumping structure for table approval.user_token
