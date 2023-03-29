@@ -6,7 +6,7 @@
             <div class="sidebar-brand-icon">
             <i class="fas fa-users"></i>
             </div>
-            <div class="sidebar-brand-text mx-2">Pusat Layanan Pengaduan</div>
+            <div class="sidebar-brand-text mx-2">Website Approval</div>
         </a>
 
         <!-- Divider -->

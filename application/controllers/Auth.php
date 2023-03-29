@@ -139,9 +139,9 @@ class Auth extends CI_Controller {
         $config = array();
         $config['protocol']  = 'smtp';
         $config['smtp_host'] = 'sandbox.smtp.mailtrap.io';
-        $config['smtp_user'] = 'ce6df58ce7816a';
-        $config['smtp_pass'] = '0f5877ce40e374';
-        $config['smtp_port'] = 587;
+        $config['smtp_user'] = 'db40219b71a72f';
+        $config['smtp_pass'] = '3858a021a3b5a6';
+        $config['smtp_port'] = 2525;
         $config['mailtype']  = 'html';
         $config['charset']   = 'utf-8';
 

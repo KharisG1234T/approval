@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
+    public function __construct()
+    {
+        parent::__construct();
+        // user access
+        is_logged_in();
+    }
+
     // index view web
     public function index()
     {

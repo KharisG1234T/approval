@@ -25,6 +25,7 @@
                                     <th>#</th>
                                     <th>Nama</th>
                                     <th>Email</th>
+                                    <th>Akses</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -36,6 +37,15 @@
                                 <td><?= $index; ?></td>
                                 <td><?= $um['name']; ?></td>
                                 <td><?= $um['email']; ?></td>
+                                <td>
+                                <?php if($um['role_id'] == 1) : ?> <?= 'Administrator' ?>
+                                <?php elseif($um['role_id'] == 2) : ?> <?= 'Sales' ?>
+                                <?php elseif($um['role_id'] == 3) : ?> <?= 'PM' ?>
+                                <?php elseif($um['role_id'] == 4) : ?> <?= 'KoorSales' ?>
+                                <?php elseif($um['role_id'] == 5) : ?> <?= 'HeadRegion' ?>
+                                <?php elseif($um['role_id'] == 6) : ?> <?= 'ManagerSales' ?>
+                                <?php else : ?> <?= 'ManagerOps' ?> <?php endif; ?>
+                                </td>
                                 <td>
                                     <?php if ($um['is_active'] == 1) {
                                         echo 'Active';

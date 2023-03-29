@@ -18,8 +18,13 @@
                         <div class="card-body">
                             <h5 class="card-title"><?= $member['name']; ?></h5>
                             <p>
-                                <?php if($member['role_id'] == 2) : ?> <?= 'Member' ?>
-                                <?php else : ?> <?= 'Admin' ?> <?php endif; ?> <br>
+                                <?php if($member['role_id'] == 1) : ?> <?= 'Administrator' ?>
+                                <?php elseif($member['role_id'] == 2) : ?> <?= 'Sales' ?>
+                                <?php elseif($member['role_id'] == 3) : ?> <?= 'PM' ?>
+                                <?php elseif($member['role_id'] == 4) : ?> <?= 'KoorSales' ?>
+                                <?php elseif($member['role_id'] == 5) : ?> <?= 'HeadRegion' ?>
+                                <?php elseif($member['role_id'] == 6) : ?> <?= 'ManagerSales' ?>
+                                <?php else : ?> <?= 'ManagerOps' ?> <?php endif; ?> <br>
                                 <?= $member['email']; ?> <br>
                                 Status? 
                                 <?php if($member['is_active'] == 1) : ?> <?= 'Active' ?>

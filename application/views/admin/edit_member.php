@@ -29,9 +29,8 @@
                     <div class="form-group">
                         <label for="role_id">Tingkatan User</label>
                         <select class="form-control" id="role_id" name="role_id">
-                            <option value="">Akses Sebagai</option>
-                            <?php foreach ($menu as $m) : ?>
-                            <option value="<?= $m['id']; ?>"><?= $m['menu']; ?></option>
+                            <?php foreach ($roles as $role) : ?>
+                            <option value="<?= $role['id']; ?>"><?= $role['role']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

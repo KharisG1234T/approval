@@ -14,7 +14,7 @@
 
 -- Dumping structure for table approval.barangpeminjaman
 CREATE TABLE IF NOT EXISTS `barangpeminjaman` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_bp` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sku` varchar(25) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `qty` int(15) NOT NULL,
@@ -23,12 +23,12 @@ CREATE TABLE IF NOT EXISTS `barangpeminjaman` (
   `stok_po` varchar(10) NOT NULL,
   `maks_delivery` date NOT NULL,
   `id_peminjaman` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id_bp`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.barangpeminjaman: ~5 rows (approximately)
 /*!40000 ALTER TABLE `barangpeminjaman` DISABLE KEYS */;
-INSERT INTO `barangpeminjaman` (`id`, `sku`, `nama`, `qty`, `harga`, `jumlah`, `stok_po`, `maks_delivery`, `id_peminjaman`) VALUES
+INSERT INTO `barangpeminjaman` (`id_bp`, `sku`, `nama`, `qty`, `harga`, `jumlah`, `stok_po`, `maks_delivery`, `id_peminjaman`) VALUES
 	(1, '', 'Sampel', 2, 50000, 100000, '', '2023-03-08', 1),
 	(2, '', 'Tester', 3, 1000, 2000, '', '2023-03-10', 1),
 	(3, '', 'Sampel', 5, 1000, 5000, '', '2023-03-08', 2),
@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS `cabang` (
   `id_cabang` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nama_cabang` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id_cabang`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table approval.cabang: ~3 rows (approximately)
+-- Dumping data for table approval.cabang: ~1 rows (approximately)
 /*!40000 ALTER TABLE `cabang` DISABLE KEYS */;
 INSERT INTO `cabang` (`id_cabang`, `nama_cabang`) VALUES
 	(5, 'CV Solusi Arya Prima');
@@ -54,20 +54,20 @@ CREATE TABLE IF NOT EXISTS `peminjaman` (
   `id_peminjaman` int(15) unsigned NOT NULL AUTO_INCREMENT,
   `id_user` int(15) NOT NULL,
   `id_cabang` int(15) NOT NULL,
-  `from` varchar(25) NOT NULL,
-  `date` varchar(255) NOT NULL,
-  `number` int(15) NOT NULL,
+  `from` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `number` varchar(50) NOT NULL DEFAULT '',
   `closingdate` date NOT NULL,
-  `note` varchar(25) NOT NULL,
+  `note` varchar(255) NOT NULL,
   PRIMARY KEY (`id_peminjaman`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.peminjaman: ~3 rows (approximately)
 /*!40000 ALTER TABLE `peminjaman` DISABLE KEYS */;
 INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `id_cabang`, `from`, `date`, `number`, `closingdate`, `note`) VALUES
-	(1, 1, 0, '', '07/03/2023', 3, '2023-03-10', 'Urgent'),
-	(2, 1, 5, 'Pusat 1', '07/03/2023', 3, '2023-03-11', 'Urgent'),
-	(3, 1, 5, 'Pusat 1', '08/03/2023', 3, '2023-03-10', 'Test');
+	(1, 1, 0, '', '0000-00-00', '3', '2023-03-10', 'Urgent'),
+	(2, 1, 5, 'Pusat 1', '0000-00-00', '3', '2023-03-11', 'Urgent'),
+	(3, 1, 5, 'Pusat 1', '0000-00-00', '3', '2023-03-10', 'Test');
 /*!40000 ALTER TABLE `peminjaman` ENABLE KEYS */;
 
 -- Dumping structure for table approval.user
@@ -81,23 +81,28 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_active` int(1) NOT NULL,
   `date_created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`) VALUES
 	(27, 'Admin Raizel', 'admin@mail.com', 'Screenshot_1.png', '$2y$10$.9Jgo7HSNyrg9nCJVv5uh.EpgVulkqzZDnG3gBXc5ypSKCd1pViim', 1, 1, 1599504982),
-	(29, 'Tester', 'web1.hitechcomputer@gmail.com', 'logo_bw1.jpg', '$2y$10$6vmR.Ia65RJvidhIEKWOVuhE.igclGpTWkTko9SVy3fQe9DSiHbBy', 2, 1, 1678265073);
+	(29, 'Tester', 'web1.hitechcomputer@gmail.com', 'logo_bw1.jpg', '$2y$10$6vmR.Ia65RJvidhIEKWOVuhE.igclGpTWkTko9SVy3fQe9DSiHbBy', 2, 1, 1678265073),
+	(31, 'pm', 'pm@premmiere.co.id', 'default.jpg', '$2y$10$q59RcJszxu.UFselb.qtnuFdx4xnM7l/piZ/117kXN9sj/TS0S2kG', 3, 1, 1679990629),
+	(32, 'Koordinator Sales', 'koorsales@premmiere.co.id', 'default.jpg', '$2y$10$nAk01O.3lY8E2e0qjhWS.u3lS45RwVGlUv3E6/xltnqTJ/0Iw6HRa', 4, 1, 1679990764),
+	(33, 'Head Region Sales', 'headregion@premmiere.co.id', 'default.jpg', '$2y$10$OoDPvjOJF1SBN9.kG3D9guUkatoV4eECL8qP5olB.yuLJgYDakSzi', 5, 1, 1679990811),
+	(34, 'Manager Sales', 'mansales@premmiere.co.id', 'default.jpg', '$2y$10$3V2QkUPT9YTz/o/nqBBlRuWNz2upVkaG.pwZjFejBvfoyfz.KDOKy', 6, 1, 1679990856),
+	(35, 'Manager Operasional', 'manops@premmiere.co.id', 'default.jpg', '$2y$10$XLdx3fdOGVsYgffVuEidtezPJhH.9Mw31rchlEEvO0fnLYKqtK.Ei', 7, 1, 1679990893);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table approval.userpeminjaman
 CREATE TABLE IF NOT EXISTS `userpeminjaman` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_up` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
   `nama` varchar(25) NOT NULL,
   `approvedate` date NOT NULL,
   `id_peminjaman` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id_up`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.userpeminjaman: ~0 rows (approximately)
@@ -112,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `user_access_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
--- Dumping data for table approval.user_access_menu: ~8 rows (approximately)
+-- Dumping data for table approval.user_access_menu: ~10 rows (approximately)
 /*!40000 ALTER TABLE `user_access_menu` DISABLE KEYS */;
 INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 	(1, 1, 1),
@@ -189,13 +194,18 @@ CREATE TABLE IF NOT EXISTS `user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.user_role: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
 INSERT INTO `user_role` (`id`, `role`) VALUES
 	(1, 'Administrator'),
-	(2, 'Member');
+	(2, 'Sales'),
+	(3, 'PM'),
+	(4, 'KoorSales'),
+	(5, 'HeadRegion'),
+	(6, 'ManagerSales'),
+	(7, 'ManagerOps');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
 -- Dumping structure for table approval.user_sub_menu
@@ -207,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `user_sub_menu` (
   `icon` varchar(128) NOT NULL,
   `is_active` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.user_sub_menu: ~15 rows (approximately)
 /*!40000 ALTER TABLE `user_sub_menu` DISABLE KEYS */;
@@ -227,7 +237,8 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 	(14, 5, 'Pengajuan Gagal', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(15, 5, 'Pengajuan Selesai', 'admin', 'fas fa-fw fa-file-alt', 1),
 	(16, 6, 'Status Pengaduan', 'report/statusreport', 'fas fa-fw fa-file-alt', 1),
-	(17, 1, 'Data Cabang', 'cabang/index', 'fa fa-flag', 1);
+	(17, 1, 'Data Cabang', 'cabang/index', 'fa fa-flag', 1),
+	(18, 4, 'Form Peminjaman', 'peminjaman/index', 'fas fa-fw fa-file-alt', 1);
 /*!40000 ALTER TABLE `user_sub_menu` ENABLE KEYS */;
 
 -- Dumping structure for table approval.user_token
@@ -237,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `user_token` (
   `token` varchar(128) NOT NULL,
   `date_created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table approval.user_token: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_token` DISABLE KEYS */;
