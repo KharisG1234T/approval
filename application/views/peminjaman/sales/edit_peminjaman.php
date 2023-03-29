@@ -180,7 +180,6 @@
     for (let i = 1; i <= tbRow.length; i++) {
       let data = $(`#total${i}`).val()
       total = total + parseInt(data ? data : 0);
-      console.log('total', total)
     }
     $('#total').text(total)
 
@@ -190,6 +189,7 @@
       var button_id = $(this).attr("id");
       $('#row' + button_id + '').remove();
       no--;
+      change()
     });
 
 

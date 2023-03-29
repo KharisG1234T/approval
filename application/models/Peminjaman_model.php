@@ -12,7 +12,7 @@ class Peminjaman_model extends CI_Model
 
 	public function getAll()
 	{
-		$this->db->select("peminjaman.id_peminjaman, peminjaman.from, peminjaman.date, peminjaman.closingdate, peminjaman.note, user.name, cabang.nama_cabang");
+		$this->db->select("peminjaman.*, user.name, cabang.nama_cabang");
 		$this->db->from('peminjaman');
 		$this->db->join("user", 'user.id = peminjaman.id_user', 'inner');
 		$this->db->join("cabang", "cabang.id_cabang = peminjaman.id_cabang", "inner");

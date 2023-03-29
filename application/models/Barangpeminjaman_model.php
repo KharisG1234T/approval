@@ -19,6 +19,10 @@ class Barangpeminjaman_model extends CI_Model
     //     return $this->db->get_where('barangpeminjaman', ['id_bp' => $id_bp])->row_array();
     // }
 
+    public function update($id, $data)
+    {
+        return $this->db->where('id_bp', $id)->update('barangpeminjaman', $data);
+    }
     public function save($data)
     {
         return $this->db->insert('barangpeminjaman', $data);

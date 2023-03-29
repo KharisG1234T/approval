@@ -50,10 +50,12 @@
                       <thead>
                         <tr>
                           <td>Nomor</td>
+                          <td>SKU</td>
                           <td>Nama Barang</td>
                           <td>Jumlah</td>
                           <td>Harga Satuan</td>
                           <td>Total Harga</td>
+                          <td>Stok/PO</td>
                           <td>Maks Delivery</td>
                         </tr>
                       </thead>
@@ -63,18 +65,20 @@
                           <?php $total = $total + $barang['jumlah'] ?>
                           <tr>
                             <td><label>No.<?= $key + 1 ?></label></td>
-                            <td><input type="text" id="name1" placeholder="Nama Barang" class="form-control" readonly value="<?= $barang['nama'] ?>"></td>
-                            <td><input type="number" id="qty1" placeholder="QTY" class="form-control" readonly value="<?= $barang['qty'] ?>"></td>
-                            <td><input type="number" id="price1" placeholder="Harga Satuan" class="form-control" readonly value="<?= $barang['harga'] ?>"></td>
-                            <td><input type="number" id="total1" placeholder="Total" class="form-control" readonly value="<?= $barang['jumlah'] ?>"></td>
-                            <td><input type="date" id="maks1" placeholder="Maks Delivery" class="form-control date" readonly value="<?= $barang['maks_delivery'] ?>"></td>
+                            <td><input type="text" placeholder="SKU" class="form-control" readonly value="<?= $barang['sku'] ? $barang['sku'] : "-" ?>"></td>
+                            <td><input type="text" placeholder="Nama Barang" class="form-control" readonly value="<?= $barang['nama'] ?>"></td>
+                            <td><input type="number" placeholder="QTY" class="form-control" readonly value="<?= $barang['qty'] ?>"></td>
+                            <td><input type="number" placeholder="Harga Satuan" class="form-control" readonly value="<?= $barang['harga'] ?>"></td>
+                            <td><input type="number" placeholder="Total" class="form-control" readonly value="<?= $barang['jumlah'] ?>"></td>
+                            <td><input type="text" placeholder="Stok/PO" class="form-control" readonly value="<?= $barang['stok_po'] ? $barang['stok_po'] : "-" ?>"></td>
+                            <td><input type="date" placeholder="Maks Delivery" class="form-control date" readonly value="<?= $barang['maks_delivery'] ?>"></td>
                           </tr>
                         <?php } ?>
                       </tbody>
                       <tfoot>
                         <tr>
                           <td colspan="4" class="text-center font-weight-bold">Total</td>
-                          <td colspan="2" class="font-weight-bold text-center">Rp. <?= $total ?></td>
+                          <td colspan="4" class="font-weight-bold text-center">Rp. <?= $total ?></td>
                         </tr>
                       </tfoot>
                     </table>

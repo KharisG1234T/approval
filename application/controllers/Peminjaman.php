@@ -40,6 +40,9 @@ class Peminjaman extends CI_Controller
   // page tambah peminjaman
   public function add()
   {
+    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
     $data['title'] = 'Tambah Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['cabangs'] = $this->Cabang_model->getAll();
@@ -68,8 +71,6 @@ class Peminjaman extends CI_Controller
 
     $barang = $this->input->post('barang');
     foreach ($barang as $item) {
-      var_dump($item);
-      echo ($item['name']);
       $data = array(
         'id_peminjaman' => $peminjamanId,
         'sku' => '',
@@ -82,15 +83,13 @@ class Peminjaman extends CI_Controller
       );
       $this->Barangpeminjaman_model->save($data);
     }
-
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-          Data telah ditambah!
-          </div>');
-    redirect(base_url('peminjaman'));
   }
 
   public function delete($id_peminjaman)
   {
+    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
     $this->Peminjaman_model->delete($id_peminjaman);
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Data berhasil dihapus!
@@ -104,13 +103,21 @@ class Peminjaman extends CI_Controller
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['cabangs'] = $this->Cabang_model->getAll();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
-    // var_dump($data['peminjaman']);
-    // die;
-    $this->load->view('templates/admin_header', $data);
-    $this->load->view('templates/admin_sidebar');
-    $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/sales/edit_peminjaman', $data);
-    $this->load->view('templates/admin_footer');
+
+    // edit sku & po by PM
+    if (in_array($this->session->userdata('role_id'), [3, 8])) {
+      $this->load->view('templates/admin_header', $data);
+      $this->load->view('templates/admin_sidebar');
+      $this->load->view('templates/admin_topbar', $data);
+      $this->load->view('peminjaman/pm/edit_peminjaman', $data);
+      $this->load->view('templates/admin_footer');
+    } else {
+      $this->load->view('templates/admin_header', $data);
+      $this->load->view('templates/admin_sidebar');
+      $this->load->view('templates/admin_topbar', $data);
+      $this->load->view('peminjaman/sales/edit_peminjaman', $data);
+      $this->load->view('templates/admin_footer');
+    }
   }
 
   public function detail($id_peminjaman)
@@ -118,11 +125,11 @@ class Peminjaman extends CI_Controller
     $data['title'] = 'Detail Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
- 
+
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/sales/detail_peminjaman', $data);
+    $this->load->view('peminjaman/detail_peminjaman', $data);
     $this->load->view('templates/admin_footer');
   }
 
@@ -140,19 +147,17 @@ class Peminjaman extends CI_Controller
     );
 
     $this->Peminjaman_model->update($dataPeminjaman, $idPeminjaman);
-    
+
     // hapus barang lama
     $barangLama = $this->Barangpeminjaman_model->getAllBy($idPeminjaman);
-    foreach($barangLama as $barang){
+    foreach ($barangLama as $barang) {
       $this->Barangpeminjaman_model->delete($barang['id']);
     }
 
     // update / tambah barang baru
     $barang = $this->input->post('barang');
     foreach ($barang as $item) {
-      var_dump($item);
-      echo ($item['name']);
-      $data = array(  
+      $data = array(
         'id_peminjaman' => $idPeminjaman,
         'sku' => '',
         'nama' => $item['name'],
@@ -164,15 +169,30 @@ class Peminjaman extends CI_Controller
       );
       $this->Barangpeminjaman_model->save($data);
     }
-
-    
-    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-          Data telah diubah!
-          </div>');
-    redirect(base_url('peminjaman'));
   }
 
-
+  // set sku, stok/po, status="process"
+  public function setstatus()
+  {
+    $idPeminjaman = $this->input->post('id');
+    $barang = $this->input->post('barang');
+    foreach ($barang as $item) {
+      $id = $item['id'];
+      $data = array(
+        'id_peminjaman' => $idPeminjaman,
+        'sku' => $item['sku'],
+        'nama' => $item['name'],
+        'harga' => $item["price"],
+        'qty' => $item["qty"],
+        'jumlah' => $item["total"],
+        'stok_po' => $item['stokpo'],
+        'maks_delivery' => $item['maks'],
+      );
+      $this->Barangpeminjaman_model->update($id, $data);
+    }
+    // update status
+    $this->db->where('id_peminjaman', $idPeminjaman)->update('peminjaman', ['status' => 'PROCESS']);
+  }
 
   // 
   // add cabang

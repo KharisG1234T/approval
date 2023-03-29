@@ -165,6 +165,7 @@
       var button_id = $(this).attr("id");
       $('#row' + button_id + '').remove();
       no--;
+      change()
     });
 
 
