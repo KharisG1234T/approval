@@ -74,8 +74,12 @@ $user = $this->session->userdata();
                       <a class="badge badge-info" style="font-size:14px;" href="<?= site_url('peminjaman/process/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-file"></i> Proses</a>
                     <?php } ?>
                     <!-- is not sales and pm -->
-                    <?php if ($item['status'] == "PROCESS" && !in_array($user['role_id'], array(2, 8))) { ?>
-                      <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/acc/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-check-double"></i> Approve</a>
+                    <?php if ($item['status'] == "PROCESS" && !in_array($user['role_id'], array(1, 2, 3))) { ?>
+                      <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/approve/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-check-double"></i> Approve</a>
+                    <?php } ?>
+                    <!-- is not sales and pm -->
+                    <?php if ($item['status'] == "PROCESS" && !in_array($user['role_id'], array( 2, 3))) { ?>
+                      <a class="badge badge-danger" style="font-size:14px;" href="<?= site_url('peminjaman/reject/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-trash"></i> Tolak</a>
                     <?php } ?>
                     <!-- admin, sales -->
                     <?php if (in_array($user['role_id'], array(1)) || ((in_array($user['role_id'], array(2)) && $item['status'] == "PENDING"))) { ?>

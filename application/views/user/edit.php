@@ -47,6 +47,25 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                        Tanda Tangan
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img src="<?= base_url('assets/img/profile/ttd/') . $user['ttd']; ?>" class="img-thumbnail">
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="ttd" name="ttd">
+                                        <label class="custom-file-label" for="ttd">Tambah File</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group row justify-content-end">
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Perbarui</button>

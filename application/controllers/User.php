@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class User extends CI_Controller
+{
 
     public function __construct()
     {
@@ -15,7 +16,7 @@ class User extends CI_Controller {
     {
         $data['title'] = 'My Profile';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        
+
         $this->load->view('templates/admin_header', $data);
         $this->load->view('templates/admin_sidebar');
         $this->load->view('templates/admin_topbar', $data);
@@ -42,21 +43,23 @@ class User extends CI_Controller {
         } else {
             $name = $this->input->post('name');
             $email = $this->input->post('email');
-
             // upload image
+
             $upload_image = $_FILES['image']['name'];
-            
+            $upload_ttd = $_FILES['ttd']['name'];
+
             if ($upload_image) {
                 $config['allowed_types']    = 'jpg|jpeg|png';
                 $config['max_size']         = '6000';
                 $config['upload_path']      = './assets/img/profile/';
+                $config['encrypt_name']     = true;
 
                 $this->load->library('upload', $config);
 
                 if ($this->upload->do_upload('image')) {
                     $old_image = $data['user']['image'];
                     if ($old_image != 'default.jpg') {
-                        unlink(FCPATH.'/assets/img/profile/'.$old_image);
+                        unlink(FCPATH . '/assets/img/profile/' . $old_image);
                     }
 
                     $new_image = $this->upload->data('file_name');
@@ -66,6 +69,29 @@ class User extends CI_Controller {
                 }
             }
 
+            if ($upload_ttd) {
+                $config['allowed_types']    = 'jpg|jpeg|png';
+                $config['max_size']         = '6000';
+                $config['upload_path']      = './assets/img/profile/ttd';
+                $config['encrypt_name']     = true;
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('ttd')) {
+                    $old_image = $data['user']['ttd'];
+                    if ($old_image != 'default.jpg' && $old_image != null) {
+                        unlink(FCPATH . '/assets/img/profile/ttd/' . $old_image);
+                    }
+                    
+                    $new_image = $this->upload->data('file_name');
+                    $this->db->set('ttd', $new_image);
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            
+
             $this->db->set('name', $name);
             $this->db->where('email', $email);
             $this->db->update('user');
@@ -74,7 +100,6 @@ class User extends CI_Controller {
             Profile changed successfully!</div>');
             redirect('user');
         }
-        
     }
 
     // change password user
@@ -94,9 +119,9 @@ class User extends CI_Controller {
         $this->form_validation->set_rules('new_password2', 'Ketik Ulang Password Baru', 'required|trim|min_length[5]|matches[new_password1]', [
             'required' => 'Fill in new password!',
             'min_length' => 'Password terlalu pendek, minimal 5 karakter!',
-            'matches' => 'Passwords tidak sama!' 
+            'matches' => 'Passwords tidak sama!'
         ]);
-        
+
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/admin_header', $data);
             $this->load->view('templates/admin_sidebar');
@@ -123,7 +148,7 @@ class User extends CI_Controller {
                     $this->db->set('password', $password_hash);
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user');
-                    
+
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                     Password berhasil diganti!</div>');
                     redirect('user/changepassword');
@@ -142,5 +167,4 @@ class User extends CI_Controller {
         Akun berhasil dihapus!</div>');
         redirect('auth');
     }
-
 }

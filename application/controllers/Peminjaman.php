@@ -8,7 +8,7 @@ class Peminjaman extends CI_Controller
   {
     parent::__construct();
     // load model
-    $this->load->model(array('Barangpeminjaman_model', 'Userpeminjaman_model', 'Peminjaman_model', 'Cabang_model'));
+    $this->load->model(array('Barangpeminjaman_model', 'Userapproval_model', 'Peminjaman_model', 'Cabang_model'));
   }
 
   public function index()
@@ -21,19 +21,6 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
     $this->load->view('peminjaman/index', $data);
-    $this->load->view('templates/admin_footer');
-  }
-
-  public function index2()
-  {
-    $data['title'] = 'List Peminjaman';
-    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-    $data['peminjaman'] = $this->Peminjaman_model->getAll();
-
-    $this->load->view('templates/admin_header', $data);
-    $this->load->view('templates/admin_sidebar');
-    $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/index2', $data);
     $this->load->view('templates/admin_footer');
   }
 
@@ -84,6 +71,13 @@ class Peminjaman extends CI_Controller
       );
       $this->Barangpeminjaman_model->save($data);
     }
+    $payloadUserApproval = array(
+      'createdat' => date('Y-m-d'),
+      'id_peminjaman' => $peminjamanId,
+      'id_user' => $this->session->userdata('id'),
+    );
+
+    $this->Userapproval_model->save($payloadUserApproval);
   }
 
   public function delete($id_peminjaman)
@@ -139,6 +133,36 @@ class Peminjaman extends CI_Controller
     $data['title'] = 'Detail Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
+    $data['peminjaman']['approve']['sales'] = null;
+    $data['peminjaman']['approve']['pm'] = null;
+    $data['peminjaman']['approve']['ks'] = null;
+    $data['peminjaman']['approve']['hr'] = null;
+    $data['peminjaman']['approve']['ms'] = null;
+    $data['peminjaman']['approve']['mo'] = null;
+
+    foreach ($data['peminjaman']['userapproval']['users'] as $user) {
+      if ($user['role_id'] == 2) {
+        $data['peminjaman']['approve']['sales'] = $user;
+      }
+      if ($user['role_id'] == 8) {
+        $data['peminjaman']['approve']['pm'] = $user;
+      }
+      if ($user['role_id'] == 4) {
+        $data['peminjaman']['approve']['ks'] = $user;
+      }
+      if ($user['role_id'] == 5) {
+        $data['peminjaman']['approve']['hr'] = $user;
+      }
+      if ($user['role_id'] == 6) {
+        $data['peminjaman']['approve']['ms'] = $user;
+      }
+      if ($user['role_id'] == 7) {
+        $data['peminjaman']['approve']['mo'] = $user;
+      }
+    }
+
+    // unset array userapproval
+    unset($data['peminjaman']['userapproval']);
 
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
@@ -193,19 +217,68 @@ class Peminjaman extends CI_Controller
     foreach ($barang as $item) {
       $id = $item['id'];
       $data = array(
-        'id_peminjaman' => $idPeminjaman,
         'sku' => $item['sku'],
-        'nama' => $item['name'],
-        'harga' => $item["price"],
-        'qty' => $item["qty"],
-        'jumlah' => $item["total"],
         'stok_po' => $item['stokpo'],
-        'maks_delivery' => $item['maks'],
       );
       $this->Barangpeminjaman_model->update($id, $data);
     }
     // update status
     $this->db->where('id_peminjaman', $idPeminjaman)->update('peminjaman', ['status' => 'PROCESS']);
+  }
+
+  public function approve($id_peminjaman)
+  {
+    //selain admin dan sales bisa approve
+    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+
+      $userapproval = $this->db->from('userapproval')->where('id_peminjaman', $id_peminjaman)->get()->result_array();
+
+      $exist = false;
+      foreach ($userapproval as $user) {
+        $data = $this->db->select('role_id')->from('user')->where('id', $user['id_user'])->get()->row_array();
+        if ($data['role_id'] == $this->session->userdata('role_id')) {
+          $exist = true;
+        }
+      }
+
+      // cek apakah sudah pernah di setujui oleh role yg sama atau belum
+      if ($exist) {
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+          Sudah pernah di setujui!
+        </div>');
+        redirect(base_url('peminjaman'));
+      } else {
+        $data = array(
+          'createdat' => date('Y-m-d'),
+          'id_peminjaman' => $id_peminjaman,
+          'id_user' => $this->session->userdata('id'),
+        );
+
+        $this->Userapproval_model->save($data);
+        if (count($userapproval) == 5) {
+          $this->db->where('id_peminjaman', $id_peminjaman)->update('peminjaman', ['status' => 'SUCCESS']);
+        }
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+          Pengajuan berhasil di setujui!
+        </div>');
+        redirect(base_url('peminjaman'));
+      }
+    } else {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
+  }
+
+  public function reject($id_peminjaman)
+  {
+    if (!in_array($this->session->userdata('role_id'), [2, 8])) {
+      $this->db->where('id_peminjaman', $id_peminjaman)->update('peminjaman', ['status' => 'REJECTED']);
+      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+          Pengajuan berhasil di ditolak!
+        </div>');
+        redirect(base_url('peminjaman'));
+    } else {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
   }
 
   // 
