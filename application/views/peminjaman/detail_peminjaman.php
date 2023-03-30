@@ -6,7 +6,7 @@
         <div class="card">
           <div class="card-header bg-light">
             <div class="text-center">
-              <h3 class="">DETAIL PEMINJAMAN DATA PUSAT</h3>
+              <h4 class="font-weight-bold">FORM PEMINJAMAN DATA PUSAT</h4>
             </div>
           </div>
           <!-- /.card-header -->
@@ -15,32 +15,30 @@
               <div class="form-group row ">
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
-                    <select class="form-control" id="direction" name="direction" readonly>
-                      <option value="<?= $peminjaman['id_cabang'] ?>"><?= $peminjaman['nama_cabang'] ?></option>
-                    </select>
+                    <p class="font-weight-bold">Kepada : <?= $peminjaman['nama_cabang'] ?></p>
                   </div>
                 </div>
-                <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
+                <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4 ml-auto">
                   <div class="kosong">
-                    <input type="text" class="form-control" name="date" id="date" placeholder="Tanggal" readonly value="<?= $peminjaman['date'] ?>">
+                    <p class="font-weight-bold">Tgl : <?= date_format(date_create($peminjaman['date']), 'd/m/Y') ?></p>
                   </div>
                 </div>
               </div>
               <div class="form-group row ">
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
-                    <input type="text" class="form-control" name="from" id="from" placeholder="Dari" readonly value="<?= $peminjaman['from'] ?>">
+                    <p class="font-weight-bold">Dari : <?= $peminjaman['from'] ?></p>
                   </div>
                 </div>
-                <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
+                <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4 ml-auto">
                   <div class="kosong">
-                    <input type="text" class="form-control" name="number" id="number" placeholder="Nomor" readonly value="<?= $peminjaman['number'] ?>">
+                    <p class="font-weight-bold">Nomor: <?= $peminjaman['number'] ?></p>
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col col-10 ml-auto">
-                  <p>Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
+                  <p class="font-weight-bold">Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
                 </div>
               </div>
               <div class="form-group row">
@@ -49,14 +47,14 @@
                     <table class="table table-bordered" id="dynamic">
                       <thead>
                         <tr>
-                          <td>Nomor</td>
-                          <td>SKU</td>
-                          <td>Nama Barang</td>
-                          <td>Jumlah</td>
-                          <td>Harga Satuan</td>
-                          <td>Total Harga</td>
-                          <td>Stok/PO</td>
-                          <td>Maks Delivery</td>
+                          <td class="font-weight-bold">Nomor</td>
+                          <td class="font-weight-bold">SKU</td>
+                          <td class="font-weight-bold">Nama Barang</td>
+                          <td class="font-weight-bold">Jumlah</td>
+                          <td class="font-weight-bold">Harga Satuan</td>
+                          <td class="font-weight-bold">Total Harga</td>
+                          <td class="font-weight-bold">Stok/PO</td>
+                          <td class="font-weight-bold">Maks Delivery</td>
                         </tr>
                       </thead>
                       <tbody>
@@ -65,13 +63,13 @@
                           <?php $total = $total + $barang['jumlah'] ?>
                           <tr>
                             <td><label>No.<?= $key + 1 ?></label></td>
-                            <td><input type="text" placeholder="SKU" class="form-control" readonly value="<?= $barang['sku'] ? $barang['sku'] : "-" ?>"></td>
-                            <td><input type="text" placeholder="Nama Barang" class="form-control" readonly value="<?= $barang['nama'] ?>"></td>
-                            <td><input type="number" placeholder="QTY" class="form-control" readonly value="<?= $barang['qty'] ?>"></td>
-                            <td><input type="number" placeholder="Harga Satuan" class="form-control" readonly value="<?= $barang['harga'] ?>"></td>
-                            <td><input type="number" placeholder="Total" class="form-control" readonly value="<?= $barang['jumlah'] ?>"></td>
-                            <td><input type="text" placeholder="Stok/PO" class="form-control" readonly value="<?= $barang['stok_po'] ? $barang['stok_po'] : "-" ?>"></td>
-                            <td><input type="date" placeholder="Maks Delivery" class="form-control date" readonly value="<?= $barang['maks_delivery'] ?>"></td>
+                            <td><?= $barang['sku'] ? $barang['sku'] : "-" ?></td>
+                            <td><?= $barang['nama'] ?></td>
+                            <td><?= $barang['qty'] ?></td>
+                            <td><?= $barang['harga'] ?></td>
+                            <td><?= $barang['jumlah'] ?></td>
+                            <td><?= $barang['stok_po'] ? $barang['stok_po'] : "-" ?></td>
+                            <td><?= $barang['maks_delivery'] ?></td>
                           </tr>
                         <?php } ?>
                       </tbody>
@@ -94,8 +92,7 @@
                 </div>
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
-                    <label for='note'>Note</label>
-                    <input type="text" class="form-control" name="note" id="note" placeholder="catatan" readonly value="<?= $peminjaman['note'] ?>">
+                    <p class="font-weight-bold" style="background-color: yellow;">Note : <?= $peminjaman['note'] ?></p>
                   </div>
                 </div>
               </div>

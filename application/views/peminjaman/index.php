@@ -63,13 +63,22 @@ $user = $this->session->userdata();
                     ?>
                   </td>
                   <td>
+                    <!-- public -->
                     <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('peminjaman/detail/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-eye"></i> Detail</a>
-                    <?php if (in_array($user['role_id'], array(1, 2, 3))) { ?>
-                      <?php if ($item['status'] == "PENDING" && $user['role_id'] == 2 || ($item['status'] == "PENDING" || $item['status'] == "PROCESS") && in_array($user['role_id'], array(3, 8))) { ?>
-                        <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/edit/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-pen"></i> Perbarui</a>
-                      <?php } ?>
+                    <!-- admin, sales -->
+                    <?php if (in_array($user['role_id'], array(1)) || ($item['status'] == "PENDING" && in_array($user['role_id'], array(1, 2)))) { ?>
+                      <a class="badge badge-warning" style="font-size:14px;" href="<?= site_url('peminjaman/edit/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-pen"></i> Perbarui</a>
                     <?php } ?>
-                    <?php if (in_array($user['role_id'], array(1, 2)) && $item['status'] == "PENDING") { ?>
+                    <!-- admin, pm, pm manager -->
+                    <?php if (in_array($user['role_id'], array(1)) || ($item['status'] == "PENDING" || $item['status'] == "PROCESS") && in_array($user['role_id'], array(3, 8))) { ?>
+                      <a class="badge badge-info" style="font-size:14px;" href="<?= site_url('peminjaman/process/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-file"></i> Proses</a>
+                    <?php } ?>
+                    <!-- is not sales and pm -->
+                    <?php if ($item['status'] == "PROCESS" && !in_array($user['role_id'], array(2, 8))) { ?>
+                      <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('peminjaman/acc/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-check-double"></i> Approve</a>
+                    <?php } ?>
+                    <!-- admin, sales -->
+                    <?php if (in_array($user['role_id'], array(1)) || ((in_array($user['role_id'], array(2)) && $item['status'] == "PENDING"))) { ?>
                       <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('peminjaman/delete/' . $item['id_peminjaman']); ?>')"><i class="fas fa fa-trash"></i> Hapus</a>
                     <?php } ?>
                   </td>

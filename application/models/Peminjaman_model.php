@@ -58,7 +58,7 @@ class Peminjaman_model extends CI_Model
 
 	public function delete($id_peminjaman)
 	{
-		$this->db->delete('userpeminjaman', ['id_peminjaman' => $id_peminjaman]);
+		$this->db->delete('userapproval', ['id_peminjaman' => $id_peminjaman]);
 		$this->db->delete('barangpeminjaman', ['id_peminjaman' => $id_peminjaman]);
 		$this->db->delete('peminjaman', ['id_peminjaman' => $id_peminjaman]);
 	}

@@ -20,7 +20,7 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
-    $this->load->view('peminjaman/sales/index', $data);
+    $this->load->view('peminjaman/index', $data);
     $this->load->view('templates/admin_footer');
   }
 
@@ -57,11 +57,12 @@ class Peminjaman extends CI_Controller
   // insert peminjaman
   public function insert()
   {
+
     $dataPeminjaman = array(
       'id_cabang' => $this->input->post('direction'),
       'id_user' => $this->input->post('userId'),
       'from' => $this->input->post('from'),
-      'date' => $this->input->post('date'),
+      'date' => date('Y-m-d'),
       'number' => $this->input->post('number'),
       'closingdate' => $this->input->post('closingDate'),
       'note' => $this->input->post('note'),
@@ -99,25 +100,38 @@ class Peminjaman extends CI_Controller
 
   public function edit($id_peminjaman)
   {
+    if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
     $data['title'] = 'Edit Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['cabangs'] = $this->Cabang_model->getAll();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
 
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/sales/edit_peminjaman', $data);
+    $this->load->view('templates/admin_footer');
+  }
+
+  public function process($id_peminjaman)
+  {
     // edit sku & po by PM
-    if (in_array($this->session->userdata('role_id'), [3, 8])) {
-      $this->load->view('templates/admin_header', $data);
-      $this->load->view('templates/admin_sidebar');
-      $this->load->view('templates/admin_topbar', $data);
-      $this->load->view('peminjaman/pm/edit_peminjaman', $data);
-      $this->load->view('templates/admin_footer');
-    } else {
-      $this->load->view('templates/admin_header', $data);
-      $this->load->view('templates/admin_sidebar');
-      $this->load->view('templates/admin_topbar', $data);
-      $this->load->view('peminjaman/sales/edit_peminjaman', $data);
-      $this->load->view('templates/admin_footer');
+    if (!in_array($this->session->userdata('role_id'), [1, 3, 8])) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
     }
+
+    $data['title'] = 'Edit Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['cabangs'] = $this->Cabang_model->getAll();
+    $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/pm/edit_peminjaman', $data);
+    $this->load->view('templates/admin_footer');
   }
 
   public function detail($id_peminjaman)
