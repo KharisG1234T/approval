@@ -79,7 +79,7 @@ $user = $this->session->userdata();
                     <?php } ?>
                     <!-- is not sales and pm -->
                     <?php if ($item['status'] == "PROCESS" && !in_array($user['role_id'], array( 2, 3))) { ?>
-                      <a class="badge badge-danger" style="font-size:14px;" href="<?= site_url('peminjaman/reject/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-trash"></i> Tolak</a>
+                      <a class="badge badge-dark" style="font-size:14px;" href="<?= site_url('peminjaman/reject/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-minus"></i> Tolak</a>
                     <?php } ?>
                     <!-- admin, sales -->
                     <?php if (in_array($user['role_id'], array(1)) || ((in_array($user['role_id'], array(2)) && $item['status'] == "PENDING"))) { ?>
