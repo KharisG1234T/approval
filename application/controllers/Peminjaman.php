@@ -133,12 +133,12 @@ class Peminjaman extends CI_Controller
     $data['title'] = 'Detail Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
-    $data['peminjaman']['approve']['sales'] = null;
-    $data['peminjaman']['approve']['pm'] = null;
-    $data['peminjaman']['approve']['ks'] = null;
-    $data['peminjaman']['approve']['hr'] = null;
-    $data['peminjaman']['approve']['ms'] = null;
-    $data['peminjaman']['approve']['mo'] = null;
+    $data['peminjaman']['approve']['sales'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['pm'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['ks'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['hr'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['ms'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['mo'] = ['ttd' => '', 'createdat' => ''];
 
     foreach ($data['peminjaman']['userapproval']['users'] as $user) {
       if ($user['role_id'] == 2) {
@@ -275,7 +275,7 @@ class Peminjaman extends CI_Controller
       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
           Pengajuan berhasil di ditolak!
         </div>');
-        redirect(base_url('peminjaman'));
+      redirect(base_url('peminjaman'));
     } else {
       redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
     }

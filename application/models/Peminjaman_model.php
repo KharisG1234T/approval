@@ -35,9 +35,12 @@ class Peminjaman_model extends CI_Model
 		$barangpeminjaman = $this->db->from('barangpeminjaman')->where('id_peminjaman', $id_peminjaman)->get()->result_array();
 		$userapproval = $this->db->select('createdat, id_user')->from('userapproval')->where('id_peminjaman', $id_peminjaman)->get()->result_array();
 		$users = [];
-		
+
 		foreach ($userapproval as $key=> $user) {
 			$data = $this->db->select('ttd, role_id')->from('user')->where('id', $user['id_user'])->get()->row_array();
+			if($data['ttd'] == null){
+				$data['ttd'] ='';
+			}
 			$data['createdat'] = $user['createdat'];
 			array_push($users, $data);
 			unset($userapproval[$key]);
