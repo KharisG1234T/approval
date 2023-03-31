@@ -11,11 +11,12 @@ class Peminjaman extends CI_Controller
     $this->load->model(array('Barangpeminjaman_model', 'Userapproval_model', 'Peminjaman_model', 'Cabang_model'));
   }
 
+  // load view list
   public function index()
   {
     $data['title'] = 'List Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-    $data['peminjaman'] = $this->Peminjaman_model->getAll();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll('ALL');
 
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
@@ -23,6 +24,59 @@ class Peminjaman extends CI_Controller
     $this->load->view('peminjaman/index', $data);
     $this->load->view('templates/admin_footer');
   }
+
+  public function new()
+  {
+    $data['title'] = 'List Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll('PENDING');
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/index', $data);
+    $this->load->view('templates/admin_footer');
+  }
+
+  public function onprocess()
+  {
+    $data['title'] = 'List Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll('PROCESS');
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/index', $data);
+    $this->load->view('templates/admin_footer');
+  }
+
+  public function rejected()
+  {
+    $data['title'] = 'List Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll('REJECTED');
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/index', $data);
+    $this->load->view('templates/admin_footer');
+  }
+
+  public function success()
+  {
+    $data['title'] = 'List Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getAll('SUCCESS');
+
+    $this->load->view('templates/admin_header', $data);
+    $this->load->view('templates/admin_sidebar');
+    $this->load->view('templates/admin_topbar', $data);
+    $this->load->view('peminjaman/index', $data);
+    $this->load->view('templates/admin_footer');
+  }
+  // end load view list
 
   // page tambah peminjaman
   public function add()
@@ -113,6 +167,11 @@ class Peminjaman extends CI_Controller
   {
     // edit sku & po by PM
     if (!in_array($this->session->userdata('role_id'), [1, 3, 8])) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
+    //check if peminjaman status isnot pending
+    $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
+    if ($peminjaman['status'] !== "PENDING" || $peminjaman['status'] !== "PROCESS") {
       redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
     }
 
@@ -230,6 +289,11 @@ class Peminjaman extends CI_Controller
   {
     //selain admin dan sales bisa approve
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
+      //check if peminjaman status isnot process
+      $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
+      if ($peminjaman['status'] !== "PROCESS") {
+        redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      }
 
       $userapproval = $this->db->from('userapproval')->where('id_peminjaman', $id_peminjaman)->get()->result_array();
 
