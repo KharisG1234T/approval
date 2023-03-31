@@ -193,11 +193,11 @@ class Peminjaman extends CI_Controller
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
     $data['peminjaman']['approve']['sales'] = ['ttd' => '', 'createdat' => ''];
-    $data['peminjaman']['approve']['pm'] = ['ttd' => '', 'createdat' => ''];
-    $data['peminjaman']['approve']['ks'] = ['ttd' => '', 'createdat' => ''];
-    $data['peminjaman']['approve']['hr'] = ['ttd' => '', 'createdat' => ''];
-    $data['peminjaman']['approve']['ms'] = ['ttd' => '', 'createdat' => ''];
-    $data['peminjaman']['approve']['mo'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['pm'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['ks'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['hr'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['ms'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['mo'] = ['ttd' => 'waiting.png', 'createdat' => ''];
 
     foreach ($data['peminjaman']['userapproval']['users'] as $user) {
       if ($user['role_id'] == 2) {
@@ -295,7 +295,7 @@ class Peminjaman extends CI_Controller
         redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
       }
 
-      $userapproval = $this->db->from('userapproval')->where('id_peminjaman', $id_peminjaman)->get()->result_array();
+      $userapproval = $this->db->from('userapproval')->where(['id_peminjaman' => $id_peminjaman, 'status' => 'APPROVE'])->get()->result_array();
 
       $exist = false;
       foreach ($userapproval as $user) {
@@ -316,6 +316,7 @@ class Peminjaman extends CI_Controller
           'createdat' => date('Y-m-d'),
           'id_peminjaman' => $id_peminjaman,
           'id_user' => $this->session->userdata('id'),
+          'status' => 'APPROVE',
         );
 
         $this->Userapproval_model->save($data);
@@ -334,15 +335,77 @@ class Peminjaman extends CI_Controller
 
   public function reject($id_peminjaman)
   {
-    if (!in_array($this->session->userdata('role_id'), [2, 8])) {
-      $this->db->where('id_peminjaman', $id_peminjaman)->update('peminjaman', ['status' => 'REJECTED']);
-      $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+    if (!in_array($this->session->userdata('role_id'), [1, 2, 3])) {
+
+      //check if peminjaman status isnot process
+      $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
+      if ($peminjaman['status'] !== "PROCESS") {
+        redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      }
+
+      $rejectedlist = $this->db->from('userapproval')->where(['id_peminjaman' => $id_peminjaman, 'status' => 'REJECT'])->get()->result_array();
+
+      $exist = false;
+      foreach ($rejectedlist as $user) {
+        $data = $this->db->select('role_id')->from('user')->where('id', $user['id_user'])->get()->row_array();
+        if ($data['role_id'] == $this->session->userdata('role_id')) {
+          $exist = true;
+        }
+      }
+
+      // cek apakah sudah pernah di reject oleh role yg sama atau belum
+      if ($exist) {
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+          Sudah pernah di tolak!
+        </div>');
+        redirect(base_url('peminjaman'));
+      } else {
+        // delete data with status approve if exist
+        $userapproval = $this->db->from('userapproval')->where(['id_peminjaman' => $id_peminjaman, 'status' => 'APPROVE'])->get()->result_array();
+        foreach ($userapproval as $user) {
+          $data = $this->db->select('role_id')->from('user')->where('id', $user['id_user'])->get()->row_array();
+          if ($data['role_id'] == $this->session->userdata('role_id')) {
+            $this->Userapproval_model->delete($user['id']);
+          }
+        }
+
+        // add approval status reject
+        $data = array(
+          'createdat' => date('Y-m-d'),
+          'id_peminjaman' => $id_peminjaman,
+          'id_user' => $this->session->userdata('id'),
+          'status' => 'REJECT',
+        );
+
+        $this->Userapproval_model->save($data);
+        $this->db->where('id_peminjaman', $id_peminjaman)->update('peminjaman', ['status' => 'REJECTED']);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
           Pengajuan berhasil di ditolak!
         </div>');
-      redirect(base_url('peminjaman'));
+        redirect(base_url('peminjaman'));
+      }
     } else {
       redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
     }
+  }
+
+  public function unreject($id_peminjaman)
+  {
+    if ($this->session->userdata('role_id') != 1) {
+      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+    }
+
+    //set status peminjaman to process
+    $this->Peminjaman_model->update(['status' => 'PROCESS'], $id_peminjaman);
+
+    //delete userapproval with status reject
+    $this->db->delete('userapproval', ['id_peminjaman' => $id_peminjaman, 'status' => 'REJECT']);
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+          Pembatal Tolak berhasil!
+        </div>');
+    redirect(base_url('peminjaman'));
   }
 
   // 
