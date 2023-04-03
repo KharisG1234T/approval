@@ -36,7 +36,7 @@
                             	<td><?= $index; ?></td>
                                 <td><?php echo $cab['nama_cabang']?></td>
                                 <td>
-									<a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/'.$cab['id_cabang']); ?>">Ganti</a>
+									                  <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/'.$cab['id_cabang']); ?>">Perbarui</a>
                                     <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('cabang/deletecabang/'.$cab['id_cabang']); ?>')">Hapus</a>
                                 </td>
                             </tr>

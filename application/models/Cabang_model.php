@@ -14,6 +14,12 @@ class Cabang_model extends CI_Model
         return $this->db->get_where('cabang', ['id_cabang' => $id_cabang])->row_array();
     }
 
+    public function get_area()
+    {
+        $query = $this->db->get('area');
+        return $query->result_array();
+    }
+
     public function save()
     {
         $post = $this->input->post();

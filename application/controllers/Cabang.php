@@ -59,6 +59,7 @@ class Cabang extends CI_Controller {
             $data['title'] = 'Cabang Edit';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
             $data['nama_cabang'] = $this->db->get_where('cabang', ['id_cabang' => $id_cabang])->row_array();
+            $data['areas'] = $this->Cabang_model->get_area();
 
             $this->load->view('templates/admin_header', $data);
             $this->load->view('templates/admin_sidebar');
@@ -70,15 +71,17 @@ class Cabang extends CI_Controller {
         } else {
             $data = [
                 'id_cabang' => $this->input->post('id_cabang'),
+                'id_area' => $this->input->post('id_area'),
                 'nama_cabang' => $this->input->post('nama_cabang')
             ];
 
             $this->db->update('cabang', $data, ['id_cabang' => $id_cabang]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-            Cabang berhasil dirubah !</div>');
+            Cabang berhasil diperbarui !</div>');
             redirect('cabang');
         }
     }
+
 
     // delete cabang
     public function deletecabang($id_cabang = null)

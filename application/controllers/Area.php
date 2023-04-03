@@ -90,4 +90,6 @@ class Area extends CI_Controller {
             redirect('area');
         }
     }
+
+    
 }
