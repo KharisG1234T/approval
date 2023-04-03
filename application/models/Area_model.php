@@ -1,0 +1,31 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Area_model extends CI_Model
+{
+	
+    public function getAll()
+    {
+        return $this->db->get('area')->result_array();
+    }
+
+    public function getById($id)
+    {
+        return $this->db->get_where('area', ['id' => $id])->row_array();
+    }
+
+    public function save()
+    {
+        $post = $this->input->post();
+        $this->id               = uniqid();
+        $this->area             = $post['area'];
+
+        return $this->db->insert('area', $this);
+    }
+
+    public function delete($id)
+    {
+        return $this->db->delete('area', ['area' => $area]);
+    }
+
+}

@@ -18,10 +18,10 @@ class Admin extends CI_Controller {
             'title' => 'Dashboard',
             'user' => $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array(),
             'user_role' => $this->db->get('user_role')->num_rows(),
-            'user_member' => $this->db->get_where('user', ['role_id' => 2])->num_rows(),
+            'user_member' => $this->db->get_where('user')->num_rows(),
             'menu' => $this->db->get('user_menu')->num_rows(),
             'sub_menu' => $this->db->get('user_sub_menu')->num_rows(),
-            'report' => $this->db->get('user_report')->num_rows(),
+            'peminjaman' => $this->db->get('peminjaman')->num_rows(),
         ];
         
         $this->load->view('templates/admin_header', $data);
