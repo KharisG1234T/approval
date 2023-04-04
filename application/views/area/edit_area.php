@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <form action="" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="<?= $area['id']; ?>" />
+                <input type="hidden" name="id_area" value="<?= $area['id_area']; ?>" />
                     <!-- edit title -->
                 	<div class="form-group">
                 		<label for="area">Nama Area</label>

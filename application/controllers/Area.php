@@ -49,7 +49,7 @@ class Area extends CI_Controller {
         }
     }
 
-    public function editarea($id = null)
+    public function editarea($id_area = null)
     {   
         $this->form_validation->set_rules('area', 'Nama Area', 'required', [
             'required' => 'Nama Area tidak boleh kosong !'
@@ -58,7 +58,7 @@ class Area extends CI_Controller {
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Edit Area';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-            $data['area'] = $this->db->get_where('area', ['id' => $id])->row_array();
+            $data['area'] = $this->db->get_where('area', ['id_area' => $id_area])->row_array();
 
             $this->load->view('templates/admin_header', $data);
             $this->load->view('templates/admin_sidebar');
@@ -69,11 +69,11 @@ class Area extends CI_Controller {
             Gagal merubah area!</div>');
         } else {
             $data = [
-                'id' => $this->input->post('id'),
+                'id_area' => $this->input->post('id_area'),
                 'area' => $this->input->post('area')
             ];
 
-            $this->db->update('area', $data, ['id' => $id]);
+            $this->db->update('area', $data, ['id_area' => $id_area]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Area berhasil dirubah !</div>');
             redirect('area');
@@ -81,12 +81,12 @@ class Area extends CI_Controller {
     }
 
     // delete area
-    public function deletearea($id = null)
+    public function deletearea($id_area = null)
     {
-        if (!isset($id)) show_404();
+        if (!isset($id_area)) show_404();
 
         $areas = $this->Area_model;
-        if ($areas->delete($id)) {
+        if ($areas->delete($id_area)) {
             redirect('area');
         }
     }

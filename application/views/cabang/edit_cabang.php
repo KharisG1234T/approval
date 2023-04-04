@@ -16,32 +16,63 @@
             <form action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id_cabang" value="<?= $nama_cabang['id_cabang']; ?>" />
                     <!-- edit title -->
-                	<div class="form-group">
-                		<label for="nama_cabang">Nama Cabang</label>
-                		<input class="form-control" type="text" name="nama_cabang" placeholder="Nama Cabang" value="<?= $nama_cabang['nama_cabang'] ?>" />
-                	</div>
                     <div class="form-group">
-  <label for="id_area">Area Cabang</label>
-  <select class="form-control selectize" id="id_area" name="id_area">
-    <?php foreach ($areas as $a): ?>
-      <option value="<?= $a['id_area'] ?>" <?php if($a['id_area'] == $nama_cabang['id_area']){ echo 'selected'; } ?>>
-        <?= $a['area'] ?>
-      </option>
-    <?php endforeach ?>
-  </select>
+                        <label for="nama_cabang">Nama Cabang</label>
+                        <input class="form-control" type="text" name="nama_cabang" placeholder="Nama Cabang" value="<?= $nama_cabang['nama_cabang'] ?>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="id_area">Area Cabang</label>
+                        <select class="form-control selectize" id="id_area" name="id_area">
+                            <?php foreach ($areas as $a): ?>
+                                <option value="<?php echo $a['id_area']; ?>" <?php echo ($a['id_area'] == $nama_cabang['id_area']) ? 'selected' : ''; ?>>
+                                    <?php echo $a['area']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                <!-- btn -->
+                <input class="btn btn-success" type="submit" name="btn" value="Perbarui" />
+            </form>
+        </div>
+    </div>
+
 </div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
 
 <!-- Implement Selectize.js -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+<link rel="stylesheet" href="<?= base_url(); ?>assets/css/selectize.css">
+<script src="<?= base_url(); ?>assets/js/angular.min.js"></script>
+<script src="<?= base_url(); ?>assets/js/jquery.min.js"></script>
+<script src="<?= base_url(); ?>assets/js/selectize.min.js"></script>
 <script>
-$(document).ready(function () {
-  $('#id_area').selectize({
-    create: false,
-    sortField: 'text',
-    searchField: ['text'],
-    dropdownParent: 'body'
+  $(document).ready(function () {
+    var $select = $('#id_area').selectize({
+      valueField: 'id_area',
+      labelField: 'area',
+      searchField: ['area'],
+      options: <?= json_encode($areas); ?>,
+      create: true,
+      render: {
+        option_create: function(data, escape) {
+          return '<div class="create">Tambahkan <strong>' + escape(data.input) + '</strong>&hellip;</div>';
+        }
+      },
+      onInitialize: function() {
+        // Check if there is already a selected value
+        if ('<?= $nama_cabang['id_area']; ?>' !== '') {
+          var control = $select[0].selectize;
+          control.setValue('<?= $nama_cabang['id_area']; ?>');
+        }
+      },
+      createFilter: function(input) {
+        var regexp = new RegExp('^' + $.fn.selectize.escapeRegex(input) + '$', 'i');
+        return !regexp.test('<?= implode(',', array_column($areas, 'area')); ?>');
+      }
+    });
   });
-});
 </script>
+

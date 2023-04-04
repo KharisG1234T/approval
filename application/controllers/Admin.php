@@ -162,6 +162,45 @@ class Admin extends CI_Controller {
         $this->load->view('templates/admin_footer');
     }
 
+     // function member access
+     public function areaaccess($user_id)
+     {
+         $data['title'] = 'Tingkatan Hak Akses';
+         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+         $data['users'] = $this->db->get_where('user', ['id' => $user_id])->row_array();
+ 
+         $data['area'] = $this->db->get('area')->result_array();
+         
+         $this->load->view('templates/admin_header', $data);
+         $this->load->view('templates/admin_sidebar');
+         $this->load->view('templates/admin_topbar', $data);
+         $this->load->view('admin/member_access');
+         $this->load->view('templates/admin_footer');
+     }
+ 
+     // change access area
+     public function changearea()
+     {
+         $user_id = $this->input->post('userId');
+         $area_id = $this->input->post('areaId');
+ 
+         $data = [
+             'user_id' => $user_id,
+             'area_id' => $area_id
+         ];
+ 
+         $result = $this->db->get_where('user_area', $data);
+ 
+         if ($result->num_rows() < 1) {
+             $this->db->insert('user_area', $data);
+         } else {
+             $this->db->delete('user_area', $data);
+         }
+ 
+         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+         Area Telah Diperbarui!</div>');
+     }
+
     // info detail member
     public function detailmember($id)
     {

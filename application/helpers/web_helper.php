@@ -36,3 +36,16 @@ function check_access($role_id, $menu_id)
     }
 }
 
+function check_area($user_id, $area_id)
+{
+    $ci = get_instance();
+
+    $ci->db->where('user_id', $user_id);
+    $ci->db->where('area_id', $area_id);
+    $result = $ci->db->get('user_area');
+
+    if ($result->num_rows() > 0) {
+        return "checked ='checked'";
+    }
+}
+

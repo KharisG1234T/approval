@@ -36,8 +36,8 @@
                             	<td><?= $index; ?></td>
                                 <td><?php echo $ar['area']?></td>
                                 <td>
-									<a class="badge badge-success" style="font-size:14px;" href="<?= site_url('area/editarea/'.$ar['id']); ?>">Ganti</a>
-                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('area/deletearea/'.$ar['id']); ?>')">Hapus</a>
+									                  <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('area/editarea/'.$ar['id_area']); ?>">Ganti</a>
+                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('area/deletearea/'.$ar['id_area']); ?>')">Hapus</a>
                                 </td>
                             </tr>
                         <?php $index++; ?>

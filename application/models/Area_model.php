@@ -9,15 +9,15 @@ class Area_model extends CI_Model
         return $this->db->get('area')->result_array();
     }
 
-    public function getById($id)
+    public function getById($id_area)
     {
-        return $this->db->get_where('area', ['id' => $id])->row_array();
+        return $this->db->get_where('area', ['id_area' => $id_area])->row_array();
     }
 
     public function save()
     {
         $post = $this->input->post();
-        $this->id               = uniqid();
+        $this->id_area               = uniqid();
         $this->area             = $post['area'];
 
         return $this->db->insert('area', $this);
