@@ -81,7 +81,14 @@ class Cabang extends CI_Controller {
             redirect('cabang');
         }
     }
-
+    
+    public function search_area()
+    {
+        $query = $this->input->get('query');
+        $areas = $this->Cabang_model->search_area($query);
+        echo json_encode($areas);
+    }
+    
 
     // delete cabang
     public function deletecabang($id_cabang = null)
