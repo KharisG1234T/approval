@@ -180,26 +180,25 @@ class Admin extends CI_Controller {
  
      // change access area
      public function changearea()
-     {
-         $user_id = $this->input->post('userId');
-         $area_id = $this->input->post('areaId');
- 
-         $data = [
-             'user_id' => $user_id,
-             'area_id' => $area_id
-         ];
- 
-         $result = $this->db->get_where('user_area', $data);
- 
-         if ($result->num_rows() < 1) {
-             $this->db->insert('user_area', $data);
-         } else {
-             $this->db->delete('user_area', $data);
-         }
- 
-         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-         Area Telah Diperbarui!</div>');
-     }
+    {
+    $user_id = $this->input->post('userId');
+    $areas = $this->input->post('areas');
+
+    $this->db->where('user_id', $user_id);
+    $this->db->delete('user_area');
+
+    foreach ($areas as $area_id) {
+        $data = [
+        'user_id' => $user_id,
+        'area_id' => $area_id
+        ];
+        $this->db->insert('user_area', $data);
+    }
+
+    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Area Telah Diperbarui!</div>');
+    redirect('admin/areaaccess/' . $user_id);
+    }
+
 
     // info detail member
     public function detailmember($id)
