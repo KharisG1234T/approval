@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Cabang extends CI_Controller {
+class Cabang extends CI_Controller
+{
 
     public function __construct()
     {
@@ -21,7 +22,6 @@ class Cabang extends CI_Controller {
         $this->load->view('templates/admin_topbar', $data);
         $this->load->view('cabang/index', $data);
         $this->load->view('templates/admin_footer');
-        
     }
 
     // add cabang
@@ -50,11 +50,11 @@ class Cabang extends CI_Controller {
     }
 
     public function editcabang($id_cabang = null)
-    {   
+    {
         $this->form_validation->set_rules('nama_cabang', 'Nama Cabang', 'required', [
             'required' => 'Nama Cabang tidak boleh kosong !'
         ]);
-        
+
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Cabang Edit';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -69,26 +69,35 @@ class Cabang extends CI_Controller {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
             Gagal merubah cabang!</div>');
         } else {
+            $id_area = $this->input->post("id_area");
+            $check_area = $this->db->get_where("cabang", ['id_area' => $id_area])->row_array();
+
             $data = [
                 'id_cabang' => $this->input->post('id_cabang'),
                 'id_area' => $this->input->post('id_area'),
                 'nama_cabang' => $this->input->post('nama_cabang')
             ];
 
-            $this->db->update('cabang', $data, ['id_cabang' => $id_cabang]);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-            Cabang berhasil diperbarui !</div>');
-            redirect('cabang');
+            if ($check_area && ($this->input->post('id_area') !== $this->input->post('old_area'))) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    Gagal mengubah data, area sudah digunakan !</div>');
+                redirect('cabang');
+            } else {
+                $this->db->update('cabang', $data, ['id_cabang' => $id_cabang]);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                    Cabang berhasil diperbarui !</div>');
+                redirect('cabang');
+            }
         }
     }
-    
+
     public function search_area()
     {
         $query = $this->input->get('query');
         $areas = $this->Cabang_model->search_area($query);
         echo json_encode($areas);
     }
-    
+
 
     // delete cabang
     public function deletecabang($id_cabang = null)

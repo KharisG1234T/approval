@@ -20,10 +20,11 @@
                     <input class="form-control" type="text" name="nama_cabang" placeholder="Nama Cabang" value="<?= $nama_cabang['nama_cabang'] ?>" />
                 </div>
                 <div class="form-group">
+                    <input type="hidden" name="old_area" value="<?= $nama_cabang['id_area'] ?>">
                     <label for="id_area">Area Cabang</label>
                     <select class="form-control" id="id_area" name="id_area">
                         <option value="">Pilih Area</option>
-                        <?php foreach ($areas as $a): ?>
+                        <?php foreach ($areas as $a) : ?>
                             <option value="<?= $a['id_area'] ?>" <?= ($a['id_area'] == $nama_cabang['id_area']) ? 'selected' : '' ?>>
                                 <?= $a['area'] ?>
                             </option>
@@ -70,7 +71,7 @@
             },
             minimumInputLength: 1
         });
-        <?php if($nama_cabang['id_area']): ?>
+        <?php if ($nama_cabang['id_area']) : ?>
             var selectedArea = {
                 id: <?= $nama_cabang['id_area'] ?>,
                 text: '<?= $nama_cabang['area'] ?>'
