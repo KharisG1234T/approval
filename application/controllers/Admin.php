@@ -165,7 +165,7 @@ class Admin extends CI_Controller {
      // function member access
      public function areaaccess($user_id)
      {
-         $data['title'] = 'Tingkatan Hak Akses';
+         $data['title'] = 'Pengaturan Akses Data Berdasarkan Area';
          $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
          $data['users'] = $this->db->get_where('user', ['id' => $user_id])->row_array();
  

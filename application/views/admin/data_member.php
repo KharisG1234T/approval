@@ -55,7 +55,7 @@
                                     ?>
                                 </td>
                                 <td>
-                                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('admin/areaaccess/'.$um['id']); ?>">Atur Akses</a>
+                                    <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('admin/areaaccess/'.$um['id']); ?>">Atur Area</a>
                                     <a class="badge badge-primary" style="font-size:14px;" href="<?= site_url('admin/detailmember/'.$um['id']); ?>">Detail</a>
                                     <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('admin/editmember/'.$um['id']); ?>">Perbarui</a>
                                     <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('admin/deletemember/'.$um['id']); ?>')">Hapus</a>
