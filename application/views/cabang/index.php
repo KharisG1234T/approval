@@ -1,5 +1,5 @@
 <script>
-    function deleteConfirm(url){
+    function deleteConfirm(url) {
         $('#btn-delete').attr('href', url);
         $('#deleteModal').modal();
     }
@@ -32,14 +32,20 @@
                     </thead>
                     <tbody>
                         <?php $index = 1; ?>
-                        <?php foreach($cabangs as $cab) : ?>
+                        <?php foreach ($cabangs as $cab) : ?>
                             <tr>
                                 <td><?= $index; ?></td>
-                                <td><?php echo $cab['nama_cabang']?></td>
+                                <td><?php echo $cab['nama_cabang'] ?></td>
                                 <td><?php echo $cab['area']; ?></td>
                                 <td>
-                                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/'.$cab['id_cabang']); ?>">Perbarui</a>
-                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('cabang/deletecabang/'.$cab['id_cabang']); ?>')">Hapus</a>
+                                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/' . $cab['id_cabang']); ?>">Perbarui</a>
+                                    <form action="<?= site_url('cabang/deletecabang') ?>" method="post">
+                                        <input type="hidden" name="id_cabang" value="<?= $cab['id_cabang'] ?>">
+                                        <button class="btn btn-sm bagde bagde-danger" type="submit" onclick="confirm('Hapus Cabang ?')">
+                                            <a class="badge badge-danger" type="submit" style="font-size:14px; color: white">
+                                                Hapus</a>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             <?php $index++; ?>
@@ -80,7 +86,3 @@
         </div>
     </div>
 </div>
-
-
-
-

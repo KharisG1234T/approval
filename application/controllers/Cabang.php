@@ -106,8 +106,9 @@ class Cabang extends CI_Controller
 
 
     // delete cabang
-    public function deletecabang($id_cabang = null)
+    public function deletecabang()
     {
+        $id_cabang = $this->input->post("id_cabang");
         if (!isset($id_cabang)) show_404();
 
         $cabangs = $this->Cabang_model;
@@ -115,4 +116,6 @@ class Cabang extends CI_Controller
             redirect('cabang');
         }
     }
+
+    
 }
