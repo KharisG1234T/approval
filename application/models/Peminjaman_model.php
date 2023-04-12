@@ -16,6 +16,15 @@ class Peminjaman_model extends CI_Model
 		$this->db->from('peminjaman');
 		$this->db->join("user", 'user.id = peminjaman.id_user', 'inner');
 		$this->db->join("cabang", "cabang.id_cabang = peminjaman.id_cabang", "inner");
+		if ($this->session->userdata('role_id') != 1 && $this->session->userdata('role_id') != 2) {
+			$areas = $this->session->userdata("area");
+			$areaIds = [0];
+
+			foreach($areas as $area){
+				array_push($areaIds, (int)$area['area_id']);
+			}
+			$this->db->where_in('cabang.id_area', $areaIds);
+		}
 		if ($this->session->userdata('role_id') == 2) {
 			$this->db->where('user.id', $this->session->userdata('id'));
 		}

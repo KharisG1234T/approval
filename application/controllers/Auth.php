@@ -43,10 +43,12 @@ class Auth extends CI_Controller {
             if ($user['is_active'] == 1) {
                 // cek passwordnya
                 if (password_verify($password, $user['password'])) {
+                    $area = $this->db->select("area_id")->get_where('user_area', ['user_id' => $user['id']])->result_array();
                     $data = [
                         'email' => $user['email'],
                         'role_id' => $user['role_id'],
-                        'id' => $user['id']
+                        'id' => $user['id'],
+                        'area' => $area
                     ];
                     $this->session->set_userdata($data);
                     // cek role

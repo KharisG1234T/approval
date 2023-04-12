@@ -153,7 +153,17 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'User Data';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['user_member'] = $this->db->get('user')->result_array();
+        $member = $this->db->get("user")->result_array();
+        foreach($member as $key=> $mem){
+            $userarea = $this->db->select("area_id")->where("user_id", $mem['id'])->get("user_area")->result_array();
+            $areaIds = [0];
+            foreach($userarea as $ua){
+                array_push($areaIds, (int)$ua['area_id']);
+            }
+            $area = $this->db->select("area")->where_in("id_area", $areaIds)->get("area")->result_array();
+            $member[$key]["area"] = $area;
+        }
+        $data['user_member'] = $member;
 
         $this->load->view('templates/admin_header', $data);
         $this->load->view('templates/admin_sidebar');

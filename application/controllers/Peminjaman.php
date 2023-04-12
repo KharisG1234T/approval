@@ -27,7 +27,7 @@ class Peminjaman extends CI_Controller
 
   public function new()
   {
-    $data['title'] = 'List Peminjaman';
+    $data['title'] = 'List Peminjaman Terbaru';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getAll('PENDING');
 
@@ -40,7 +40,7 @@ class Peminjaman extends CI_Controller
 
   public function onprocess()
   {
-    $data['title'] = 'List Peminjaman';
+    $data['title'] = 'List Peminjaman Di Proses';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getAll('PROCESS');
 
@@ -53,7 +53,7 @@ class Peminjaman extends CI_Controller
 
   public function rejected()
   {
-    $data['title'] = 'List Peminjaman';
+    $data['title'] = 'List Peminjaman Di Tolak';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getAll('REJECTED');
 
@@ -66,7 +66,7 @@ class Peminjaman extends CI_Controller
 
   public function success()
   {
-    $data['title'] = 'List Peminjaman';
+    $data['title'] = 'List Peminjaman Sukses';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['peminjaman'] = $this->Peminjaman_model->getAll('SUCCESS');
 
