@@ -16,13 +16,19 @@ class Cabang extends CI_Controller
         $data['title'] = 'List Cabang Terdaftar';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['cabangs'] = $this->Cabang_model->getAll();
-
+    
+        foreach ($data['cabangs'] as &$cabang) {
+            $area = $this->Cabang_model->get_cabang($cabang['id_cabang'])['area'];
+            $cabang['area'] = $area;
+        }
+    
         $this->load->view('templates/admin_header', $data);
         $this->load->view('templates/admin_sidebar');
         $this->load->view('templates/admin_topbar', $data);
         $this->load->view('cabang/index', $data);
         $this->load->view('templates/admin_footer');
     }
+    
 
     // add cabang
     public function addcabang()

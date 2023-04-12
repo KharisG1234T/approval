@@ -20,6 +20,15 @@ class Cabang_model extends CI_Model
         return $query->result_array();
     }
 
+    public function get_cabang($id_cabang) {
+        $this->db->select('cabang.*, area.area');
+        $this->db->from('cabang');
+        $this->db->join('area', 'cabang.id_area = area.id_area');
+        $this->db->where('cabang.id_cabang', $id_cabang);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
     public function save()
     {
         $post = $this->input->post();
