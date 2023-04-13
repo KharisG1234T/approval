@@ -23,9 +23,10 @@ class Area_model extends CI_Model
         return $this->db->insert('area', $this);
     }
 
-    public function delete($id)
+
+    public function delete($id_area)
     {
-        return $this->db->delete('area', ['area' => $area]);
+        return $this->db->delete('area', ['id_area' => $id_area]);
     }
 
 }

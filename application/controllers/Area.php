@@ -81,8 +81,11 @@ class Area extends CI_Controller {
     }
 
     // delete area
-    public function deletearea($id_area = null)
+
+
+    public function deletearea()
     {
+        $id_area = $this->input->post("id_area");
         if (!isset($id_area)) show_404();
 
         $areas = $this->Area_model;

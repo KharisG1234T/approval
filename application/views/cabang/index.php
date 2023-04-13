@@ -1,3 +1,6 @@
+<!-- Tambahkan library jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     function deleteConfirm(url) {
         $('#btn-delete').attr('href', url);
@@ -38,12 +41,11 @@
                                 <td><?php echo $cab['nama_cabang'] ?></td>
                                 <td><?php echo $cab['area']; ?></td>
                                 <td>
-                                    <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('cabang/editcabang/' . $cab['id_cabang']); ?>">Perbarui</a>
+                                    <a class="badge badge-success mr-2" style="font-size:14px;" href="<?= site_url('cabang/editcabang/' . $cab['id_cabang']); ?>">Perbarui</a>
                                     <form action="<?= site_url('cabang/deletecabang') ?>" method="post">
                                         <input type="hidden" name="id_cabang" value="<?= $cab['id_cabang'] ?>">
-                                        <button class="btn btn-sm bagde bagde-danger" type="submit" onclick="confirm('Hapus Cabang ?')">
-                                            <a class="badge badge-danger" type="submit" style="font-size:14px; color: white">
-                                                Hapus</a>
+                                        <button class="btn btn-sm badge badge-danger" type="submit" onclick="return confirm('Hapus Cabang ?')">
+                                            Hapus
                                         </button>
                                     </form>
                                 </td>
@@ -76,6 +78,17 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="nama_cabang" name="nama_cabang" placeholder="Nama Cabang">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_area">Area Cabang</label>
+                        <select class="form-control" id="id_area" name="id_area">
+                            <option value="">Pilih Area</option>
+                            <?php foreach ($areas as $a) : ?>
+                                <option value="<?= $a['id_area'] ?>">
+                                    <?= $a['area'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

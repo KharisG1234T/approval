@@ -16,18 +16,26 @@ class Cabang extends CI_Controller
         $data['title'] = 'List Cabang Terdaftar';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['cabangs'] = $this->Cabang_model->getAll();
-    
+        $data['areas'] = $this->Cabang_model->get_area();
+
         foreach ($data['cabangs'] as &$cabang) {
-            $area = $this->Cabang_model->get_cabang($cabang['id_cabang'])['area'];
-            $cabang['area'] = $area;
+            $area_cabang = $this->Cabang_model->get_cabang($cabang['id_cabang']);
+            if ($area_cabang) {
+                $area = $area_cabang['area'];
+                $cabang['area'] = $area;
+            } else {
+                $cabang['area'] = '-';
+            }
         }
-    
+
         $this->load->view('templates/admin_header', $data);
         $this->load->view('templates/admin_sidebar');
         $this->load->view('templates/admin_topbar', $data);
         $this->load->view('cabang/index', $data);
         $this->load->view('templates/admin_footer');
     }
+
+
     
 
     // add cabang
@@ -36,6 +44,7 @@ class Cabang extends CI_Controller
         $data['title'] = 'Daftar Cabang';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['nama_cabang'] = $this->db->get('cabang')->result_array();
+        $data['areas'] = $this->Cabang_model->get_area();
 
         $this->form_validation->set_rules('nama_cabang', 'Nama Cabang', 'required', [
             'required' => 'Nama Cabang harus di isi !'
@@ -48,12 +57,22 @@ class Cabang extends CI_Controller
             $this->load->view('cabang/index', $data);
             $this->load->view('templates/admin_footer');
         } else {
-            $this->db->insert('cabang', ['nama_cabang' => $this->input->post('nama_cabang')]);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-            Cabang baru berhasil ditambahkan!</div>');
-            redirect('cabang');
+            $id_area = $this->input->post("id_area");
+            $check_area = $this->db->get_where("cabang", ['id_area' => $id_area])->row_array();
+
+            if ($check_area) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                    Gagal menambahkan cabang, area sudah digunakan!</div>');
+                redirect('cabang');
+            } else {
+                $this->db->insert('cabang', ['nama_cabang' => $this->input->post('nama_cabang'), 'id_area' => $this->input->post('id_area')]);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                Cabang baru berhasil ditambahkan!</div>');
+                redirect('cabang');
+            }
         }
     }
+
 
     public function editcabang($id_cabang = null)
     {

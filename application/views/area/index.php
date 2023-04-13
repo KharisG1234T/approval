@@ -37,7 +37,12 @@
                                 <td><?php echo $ar['area']?></td>
                                 <td>
 									                  <a class="badge badge-success" style="font-size:14px;" href="<?= site_url('area/editarea/'.$ar['id_area']); ?>">Ganti</a>
-                                    <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('area/deletearea/'.$ar['id_area']); ?>')">Hapus</a>
+                                    <form action="<?= site_url('area/deletearea') ?>" method="post">
+                                        <input type="hidden" name="id_area" value="<?= $ar['id_area'] ?>">
+                                        <button class="btn btn-sm badge badge-danger" type="submit" onclick="return confirm('Hapus Area ?')">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php $index++; ?>

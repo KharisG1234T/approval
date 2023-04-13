@@ -32,11 +32,13 @@ class Cabang_model extends CI_Model
     public function save()
     {
         $post = $this->input->post();
-        $this->id_cabang               = uniqid();
-        $this->nama_cabang             = $post['nama_cabang'];
-
+        $this->id_cabang = uniqid();
+        $this->nama_cabang = $post['nama_cabang'];
+        $this->id_area = $post['area'];
+    
         return $this->db->insert('cabang', $this);
     }
+    
 
     public function delete($id_cabang)
     {
