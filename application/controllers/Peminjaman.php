@@ -182,7 +182,7 @@ class Peminjaman extends CI_Controller
     }
     //check if peminjaman status isnot pending
     $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
-    if ($peminjaman['status'] !== "PENDING" || $peminjaman['status'] !== "PROCESS") {
+    if ($peminjaman['status'] != "PENDING" && $peminjaman['status'] != "PROCESS") {
       redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
     }
 
