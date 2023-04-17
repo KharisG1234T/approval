@@ -31,11 +31,11 @@
                 </div>
               </div>
               <div class="form-group row ">
-                <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
+                <!-- <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
                     <input type="text" class="form-control" name="from" id="from" placeholder="Dari" require>
                   </div>
-                </div>
+                </div> -->
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
                     <input type="text" class="form-control" name="number" id="number" placeholder="Nomor" readonly value="<?= date('m') ?>/PB/X/<?= date('y') ?>">
@@ -194,7 +194,7 @@
       const direction = $('#direction').val();
       const userId = $('#userid').val()
       const date = $('#date').val()
-      const from = $('#from').val()
+      // const from = $('#from').val()
       const number = $('#number').val()
       const closingDate = $('#closingdate').val()
       const note = $('#note').val()
@@ -203,7 +203,7 @@
         direction,
         userId,
         date,
-        from,
+        // from,
         number,
         closingDate,
         note,

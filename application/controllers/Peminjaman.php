@@ -98,11 +98,11 @@ class Peminjaman extends CI_Controller
   // insert peminjaman
   public function insert()
   {
-
+    $area = $this->session->userdata("area");
     $dataPeminjaman = array(
       'id_cabang' => $this->input->post('direction'),
       'id_user' => $this->input->post('userId'),
-      'from' => $this->input->post('from'),
+      'from' => $area[0]["area_id"],
       'date' => date('Y-m-d'),
       'number' => $this->input->post('number'),
       'closingdate' => $this->input->post('closingDate'),
@@ -233,10 +233,12 @@ class Peminjaman extends CI_Controller
   // insert peminjaman
   public function update()
   {
+    $area = $this->session->userdata("area");
+
     $idPeminjaman = $this->input->post('id');
     $dataPeminjaman = array(
       'id_cabang' => $this->input->post('direction'),
-      'from' => $this->input->post('from'),
+      'from' => $area[0]["area_id"],
       'date' => $this->input->post('date'),
       'number' => $this->input->post('number'),
       'closingdate' => $this->input->post('closingDate'),

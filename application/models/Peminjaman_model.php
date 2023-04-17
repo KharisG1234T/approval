@@ -23,7 +23,7 @@ class Peminjaman_model extends CI_Model
 			foreach($areas as $area){
 				array_push($areaIds, (int)$area['area_id']);
 			}
-			$this->db->where_in('cabang.id_area', $areaIds);
+			$this->db->where_in('peminjaman.from', $areaIds);
 		}
 		if ($this->session->userdata('role_id') == 2) {
 			$this->db->where('user.id', $this->session->userdata('id'));
