@@ -82,7 +82,7 @@ class Peminjaman extends CI_Controller
   public function add()
   {
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url(). '/peminjaman');
     }
     $data['title'] = 'Tambah Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -148,7 +148,7 @@ class Peminjaman extends CI_Controller
   public function delete($id_peminjaman)
   {
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url(). 'peminjaman');
     }
     $this->Peminjaman_model->delete($id_peminjaman);
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
@@ -160,7 +160,7 @@ class Peminjaman extends CI_Controller
   public function edit($id_peminjaman)
   {
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
     $data['title'] = 'Edit Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -178,12 +178,12 @@ class Peminjaman extends CI_Controller
   {
     // edit sku & po by PM
     if (!in_array($this->session->userdata('role_id'), [1, 3, 8])) {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
     //check if peminjaman status isnot pending
     $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
     if ($peminjaman['status'] != "PENDING" && $peminjaman['status'] != "PROCESS") {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
 
     $data['title'] = 'Edit Peminjaman';
@@ -303,7 +303,7 @@ class Peminjaman extends CI_Controller
       //check if peminjaman status isnot process
       $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
       if ($peminjaman['status'] !== "PROCESS") {
-        redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+        redirect(base_url() . 'peminjaman');
       }
 
       $userapproval = $this->db->from('userapproval')->where(['id_peminjaman' => $id_peminjaman, 'status' => 'APPROVE'])->get()->result_array();
@@ -340,7 +340,7 @@ class Peminjaman extends CI_Controller
         redirect(base_url('peminjaman'));
       }
     } else {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
   }
 
@@ -351,7 +351,7 @@ class Peminjaman extends CI_Controller
       //check if peminjaman status isnot process
       $peminjaman = $this->Peminjaman_model->getById($id_peminjaman);
       if ($peminjaman['status'] !== "PROCESS") {
-        redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+        redirect(base_url() . 'peminjaman');
       }
 
       $rejectedlist = $this->db->from('userapproval')->where(['id_peminjaman' => $id_peminjaman, 'status' => 'REJECT'])->get()->result_array();
@@ -397,14 +397,14 @@ class Peminjaman extends CI_Controller
         redirect(base_url('peminjaman'));
       }
     } else {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
   }
 
   public function unreject($id_peminjaman)
   {
     if ($this->session->userdata('role_id') != 1) {
-      redirect($_SERVER['HTTP_REFERER'] . '/peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
 
     //set status peminjaman to process
