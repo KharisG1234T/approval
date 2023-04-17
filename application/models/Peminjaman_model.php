@@ -38,10 +38,11 @@ class Peminjaman_model extends CI_Model
 
 	function getDetail($id_peminjaman)
 	{
-		$this->db->select("peminjaman.*, cabang.nama_cabang, cb.nama_cabang as from_cb");
+		$this->db->select("peminjaman.*, cabang.nama_cabang, cb.nama_cabang as from_cb, user.name");
 		$this->db->from('peminjaman');
 		$this->db->join("cabang", "cabang.id_cabang = peminjaman.id_cabang", "inner");
 		$this->db->join("cabang AS cb", "cb.id_area = peminjaman.from", "inner");
+		$this->db->join("user", "user.id = peminjaman.id_user", "inner");
 		$this->db->where('peminjaman.id_peminjaman', $id_peminjaman);
 		$query = $this->db->get()->row_array();
 

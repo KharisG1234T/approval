@@ -87,7 +87,6 @@ class Peminjaman extends CI_Controller
     $data['title'] = 'Tambah Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['cabangs'] = $this->Cabang_model->getAll();
-
     $this->load->view('templates/admin_header', $data);
     $this->load->view('templates/admin_sidebar');
     $this->load->view('templates/admin_topbar', $data);
@@ -95,14 +94,26 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_footer');
   }
 
+  // user peminjaman droprown
+  public function userdropdown($id_area)
+  {
+    $userarea = $this->db->get_where('user_area', ['area_id' => $id_area])->result_array();
+
+    $userIds = [0];
+    foreach ($userarea as $area) {
+      array_push($userIds, $area["user_id"]);
+    }
+    $users = $this->db->select("id, name")->from("user")->where_in('id', $userIds)->where("role_id", 2)->get()->result_array();
+    echo json_encode($users);
+  }
+
   // insert peminjaman
   public function insert()
   {
-    $area = $this->session->userdata("area");
     $dataPeminjaman = array(
       'id_cabang' => $this->input->post('direction'),
       'id_user' => $this->input->post('userId'),
-      'from' => $area[0]["area_id"],
+      'from' => $this->input->post('from'),
       'date' => date('Y-m-d'),
       'number' => $this->input->post('number'),
       'closingdate' => $this->input->post('closingDate'),
@@ -233,12 +244,10 @@ class Peminjaman extends CI_Controller
   // insert peminjaman
   public function update()
   {
-    $area = $this->session->userdata("area");
-
     $idPeminjaman = $this->input->post('id');
     $dataPeminjaman = array(
       'id_cabang' => $this->input->post('direction'),
-      'from' => $area[0]["area_id"],
+      'from' => $this->input->post('from'),
       'date' => $this->input->post('date'),
       'number' => $this->input->post('number'),
       'closingdate' => $this->input->post('closingDate'),

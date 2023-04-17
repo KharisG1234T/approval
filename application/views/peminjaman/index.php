@@ -35,7 +35,7 @@ $user = $this->session->userdata();
             <tr>
               <th>No</th>
               <th>Peminjam</th>
-              <th>Nama Cabang</th>
+              <th>Kepada</th>
               <th>Peminjaman Dari</th>
               <th>Tanggal</th>
               <th>Closing Date</th>

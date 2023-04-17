@@ -13,6 +13,8 @@
           <div class="card-body p-5">
             <form id="form" class="form-horizontal">
               <input type="hidden" name="id" id="id" value="<?= $peminjaman['id_peminjaman'] ?>">
+              <input type="hidden" id="userid" value="<?= $peminjaman["id_user"] ?>">
+              <input type="hidden" value="<?= $this->session->userdata('role_id') ?>" name="roleId" id="roleId" />
               <div class="form-group row ">
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
@@ -32,11 +34,33 @@
                 </div>
               </div>
               <div class="form-group row ">
-                <!-- <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
-                  <div class="kosong">
-                    <input type="text" class="form-control" name="from" id="from" placeholder="Dari" required value="<?= $peminjaman['from'] ?>">
+                <?php
+                $roleId = $this->session->userdata('role_id');
+                if ($roleId == "1") { ?>
+                  <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
+                    <div class="kosong">
+                      <select class="form-control" id="from" name="from" require>
+                        <option value="">Dari Cabang ...</option>
+                        <?php foreach ($cabangs as $cabang) { ?>
+                          <option value="<?= $cabang['id_area'] ?>" <?php if ($cabang['id_area'] == $peminjaman['from']) echo ('selected') ?>><?= $cabang['nama_cabang'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
                   </div>
-                </div> -->
+                  <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
+                    <div class="kosong">
+                      <select class="form-control" id="submitter" name="submitter" require>
+                        <option value="<?= $peminjaman["id_user"] ?>"><?= $peminjaman["name"] ?></option>
+
+                      </select>
+                    </div>
+                  </div>
+                <?php  } else {
+                  $area = $this->session->userdata('area');
+                  $areaId = $area[0]["area_id"];
+                ?>
+                  <input type="hidden" class="form-control" name="from" value="<?= $areaId ?>" id="from" placeholder="Dari" require>
+                <?php } ?>
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
                     <input type="text" class="form-control" name="number" id="number" placeholder="Nomor" readonly value="<?= $peminjaman['number'] ?>">
@@ -110,6 +134,30 @@
 </section>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+  let areaId = "";
+  $('#from').on('change', function() {
+    areaId = this.value;
+
+    // clear select box option
+    $('#submitter')
+      .empty()
+      .append('<option value="">Peminjam...</option>')
+
+    $.ajax({
+      url: `../userdropdown/${areaId}`,
+      method: 'GET',
+      cache: false,
+      success: function(data) {
+        $.each(JSON.parse(data), function(i, item) {
+          $('#submitter').append($('<option>', {
+            value: item.id,
+            text: item.name
+          }));
+        });
+      }
+    })
+
+  });
   // set total step two
   function change() {
     let total = 0;
@@ -216,9 +264,9 @@
       }
 
       const direction = $('#direction').val();
-      const userId = $('#userid').val()
+      const userId = $('#roleId').val() == 1 ? $('#submitter').val() : $('#userid').val(); // kalau admin dia ambil id dari input submitter
       const date = $('#date').val()
-      // const from = $('#from').val()
+      const from = $('#from').val()
       const number = $('#number').val()
       const closingDate = $('#closingdate').val()
       const note = $('#note').val()
@@ -228,7 +276,7 @@
         direction,
         userId,
         date,
-        // from,
+        from,
         number,
         closingDate,
         note,
