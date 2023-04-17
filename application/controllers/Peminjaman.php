@@ -1,5 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require FCPATH . '/vendor/autoload.php';
+
+use Dompdf\Dompdf;
 
 class Peminjaman extends CI_Controller
 {
@@ -82,7 +85,7 @@ class Peminjaman extends CI_Controller
   public function add()
   {
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-      redirect(base_url(). '/peminjaman');
+      redirect(base_url() . '/peminjaman');
     }
     $data['title'] = 'Tambah Peminjaman';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -148,7 +151,7 @@ class Peminjaman extends CI_Controller
   public function delete($id_peminjaman)
   {
     if (!in_array($this->session->userdata('role_id'), [1, 2])) {
-      redirect(base_url(). 'peminjaman');
+      redirect(base_url() . 'peminjaman');
     }
     $this->Peminjaman_model->delete($id_peminjaman);
     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
@@ -241,7 +244,54 @@ class Peminjaman extends CI_Controller
     $this->load->view('templates/admin_footer');
   }
 
-  // insert peminjaman
+  public function print($id_peminjaman)
+  {
+    $data['title'] = 'Detail Peminjaman';
+    $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+    $data['peminjaman'] = $this->Peminjaman_model->getDetail($id_peminjaman);
+    $data['peminjaman']['approve']['sales'] = ['ttd' => '', 'createdat' => ''];
+    $data['peminjaman']['approve']['pm'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['ks'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['hr'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['ms'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+    $data['peminjaman']['approve']['mo'] = ['ttd' => 'waiting.png', 'createdat' => ''];
+
+    foreach ($data['peminjaman']['userapproval']['users'] as $user) {
+      if ($user['role_id'] == 2) {
+        $data['peminjaman']['approve']['sales'] = $user;
+      }
+      if ($user['role_id'] == 8) {
+        $data['peminjaman']['approve']['pm'] = $user;
+      }
+      if ($user['role_id'] == 4) {
+        $data['peminjaman']['approve']['ks'] = $user;
+      }
+      if ($user['role_id'] == 5) {
+        $data['peminjaman']['approve']['hr'] = $user;
+      }
+      if ($user['role_id'] == 6) {
+        $data['peminjaman']['approve']['ms'] = $user;
+      }
+      if ($user['role_id'] == 7) {
+        $data['peminjaman']['approve']['mo'] = $user;
+      }
+    }
+
+    $pdf = $this->load->view("peminjaman/print", $data, true);
+
+    $dompdf = new Dompdf();
+    $dompdf->set_option('isRemoteEnabled', TRUE);
+    $dompdf->loadHtml($pdf);
+    // (Optional) Setup the paper size and orientation
+    $dompdf->setPaper('F4', 'landscape');
+    // Render the HTML as PDF
+    $dompdf->render();
+    // Output the generated PDF to Browser
+    //$dompdf->stream();
+    $dompdf->stream('my.pdf', array('Attachment' => 0));
+
+  }
+  // update peminjaman
   public function update()
   {
     $idPeminjaman = $this->input->post('id');
