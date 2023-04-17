@@ -27,7 +27,7 @@
               <div class="form-group row ">
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4">
                   <div class="kosong">
-                    <p class="font-weight-bold">Dari : <?= $peminjaman['from'] ?></p>
+                    <p class="font-weight-bold">Dari : <?= $peminjaman['from_cb'] ?></p>
                   </div>
                 </div>
                 <div class="col col-sm-6 col-md-4 col-lg-4 col-lg-4 ml-auto">

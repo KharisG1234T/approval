@@ -12,10 +12,11 @@ class Peminjaman_model extends CI_Model
 
 	public function getAll($status)
 	{
-		$this->db->select("peminjaman.*, user.name, cabang.nama_cabang");
+		$this->db->select("peminjaman.*, user.name, cabang.nama_cabang, cb.nama_cabang as from_cb");
 		$this->db->from('peminjaman');
 		$this->db->join("user", 'user.id = peminjaman.id_user', 'inner');
 		$this->db->join("cabang", "cabang.id_cabang = peminjaman.id_cabang", "inner");
+		$this->db->join("cabang AS cb", "cb.id_area = peminjaman.from", "inner");
 		if ($this->session->userdata('role_id') != 1 && $this->session->userdata('role_id') != 2) {
 			$areas = $this->session->userdata("area");
 			$areaIds = [0];
@@ -37,9 +38,10 @@ class Peminjaman_model extends CI_Model
 
 	function getDetail($id_peminjaman)
 	{
-		$this->db->select("*");
+		$this->db->select("peminjaman.*, cabang.nama_cabang, cb.nama_cabang as from_cb");
 		$this->db->from('peminjaman');
 		$this->db->join("cabang", "cabang.id_cabang = peminjaman.id_cabang", "inner");
+		$this->db->join("cabang AS cb", "cb.id_area = peminjaman.from", "inner");
 		$this->db->where('peminjaman.id_peminjaman', $id_peminjaman);
 		$query = $this->db->get()->row_array();
 
