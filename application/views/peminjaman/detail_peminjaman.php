@@ -107,30 +107,46 @@
                         </tr>
                       </thead>
                       <tbody class="text-center">
-                        <td class="p-0">
-                          <p>Sales</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
-                        <td>
-                          <p>PM</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
-                        <td>
-                          <p>Koor Sales</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
-                        <td>
-                          <p>Head Region</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
-                        <td>
-                          <p>Manager Sales</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
-                        <td>
-                          <p>Manger Operasional</p>
-                          <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" class="img-thumbnail" width="200px">
-                        </td>
+                        <tr>
+                          <td style="border-bottom: none;">
+                            <p>Sales</p>
+                          </td>
+                          <td style="border-bottom: none;">
+                            <p>PM</p>
+                          </td>
+                          <td style="border-bottom: none;">
+                            <p>Koor Sales</p>
+                          </td>
+                          <td style="border-bottom: none;">
+                            <p>Head Region</p>
+                          </td>
+                          <td style="border-bottom: none;">
+                            <p>Manager Sales</p>
+                          </td>
+                          <td style="border-bottom: none;">
+                            <p>Manger Operasional</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                          <td style="border-top: none">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" class="img-thumbnail" width="200px">
+                          </td>
+                        </tr>
                       </tbody>
                       <tfoot>
                         <td>tgl: <?= $peminjaman['approve']['sales']['createdat'] ?></td>
