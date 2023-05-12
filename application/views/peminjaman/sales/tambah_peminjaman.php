@@ -90,9 +90,9 @@
                         <tr class="tb_row">
                           <td><label>No.1</label></td>
                           <td><input type="text" id="name1" placeholder="Nama Barang" class="form-control" required /></td>
-                          <td><input type="number" id="qty1" placeholder="QTY" onchange="getTotalFromQty(this)" class="form-control" required /></td>
-                          <td><input type="number" id="price1" placeholder="Harga Satuan" onchange="getTotalFromPrice(this)" class="form-control" required /></td>
-                          <td><input type="number" id="total1" placeholder="Total" onchange="change()" readonly class="form-control" required /></td>
+                          <td><input type="number" id="qty1" placeholder="QTY" onkeyup="getTotalFromQty(this)" class="form-control" required /></td>
+                          <td><input type="text" id="price1" placeholder="Harga Satuan" onkeyup="getTotalFromPrice(this)" class="form-control" required /></td>
+                          <td><input type="text" id="total1" placeholder="Total" onchange="change()" readonly class="form-control" required /></td>
                           <td><input type="date" id="maks1" placeholder="Maks Delivery" class="form-control date" required /></td>
                           <td><button type="button" id="tambah" class="btn btn- btn-success">Add <i class="fas fa-fw fa-plus"></i></button></td>
                         </tr>
@@ -141,6 +141,22 @@
 </section>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+  function formatRupiah(angka = 0, prefix) {
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+      split = number_string.split(','),
+      sisa = split[0].length % 3,
+      rupiah = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+      separator = sisa ? '.' : '';
+      rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+  }
+
   let areaId = "";
   $('#from').on('change', function() {
     areaId = this.value;
@@ -166,14 +182,17 @@
 
   });
 
-  // }
   // set total
   function change() {
     let total = 0;
     const tbRow = document.getElementsByClassName("tb_row");
     for (let i = 1; i <= tbRow.length; i++) {
-      let data = $(`#total${i}`).val()
-      total = total + parseInt(data ? data : 0);
+      let data = parseInt(($(`#total${i}`).val()).replace(/[^0-9]/g, ""))
+      if (total !== 0) {
+        total = total.replace(/[.]/g, "")
+      }
+      total = parseInt(total) + parseInt(data ? data : 0);
+      total = formatRupiah(total.toString());
     }
     $('#total').text(total)
   }
@@ -182,15 +201,18 @@
     const index = e.id.replace(/qty/, "")
     const qty = e.value;
     const price = $(`#price${index}`).val();
-    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    const total = parseInt((qty ? qty : 0) * parseInt(price ? price : 0))
+    $(`#total${index}`).val(formatRupiah(total.toString(), "Rp. "))
     change()
   }
 
   function getTotalFromPrice(e) {
     const index = e.id.replace(/price/, "")
-    const price = e.value;
+    const price = e.value.replace(/[^0-9]/g, "")
+    $(`#${e.id}`).val(formatRupiah(price))
     const qty = $(`#qty${index}`).val();
-    $(`#total${index}`).val(parseInt(qty ? qty : 0) * parseInt(price ? price : 0))
+    const total = parseInt((qty ? qty : 0) * parseInt(price ? price : 0))
+    $(`#total${index}`).val(formatRupiah(total.toString(), "Rp. "))
     change()
   }
 
@@ -203,9 +225,9 @@
         <tr id="row${no}" class="tb_row"> 
           <td><label>No.${no}</label></td>  
           <td><input type="text" id="name${no}" placeholder="Nama Barang" class="form-control" required /></td> 
-          <td><input type="number" placeholder="QTY" id="qty${no}" onchange="getTotalFromQty(this)" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Harga Satuan" id="price${no}"  onchange="getTotalFromPrice(this)" class="form-control" required /></td> 
-          <td><input type="number" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" required /></td> 
+          <td><input type="number" placeholder="QTY" id="qty${no}" onkeyup="getTotalFromQty(this)" class="form-control" required /></td> 
+          <td><input type="text" placeholder="Harga Satuan" id="price${no}"  onkeyup="getTotalFromPrice(this)" class="form-control" required /></td> 
+          <td><input type="text" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" required /></td> 
           <td><input type="date" placeholder="Maks Delivery" id="maks${no}" class="form-control date" required /></td> 
           <td> <button type="button" id="${no}" class="btn btn-danger btn_remove">Hapus</button></td>
         </tr>`);
@@ -227,9 +249,8 @@
         let name = $(`#name${i}`).val()
         let qty = $(`#qty${i}`).val()
         let price = $(`#price${i}`).val()
-        let total = $(`#total${i}`).val()
+        let total = parseInt(($(`#total${i}`).val()).replace(/[^0-9]/g, ""))
         let maks = $(`#maks${i}`).val()
-
         barang = [...barang, {
           name,
           qty,
