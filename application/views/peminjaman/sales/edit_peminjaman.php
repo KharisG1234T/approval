@@ -275,7 +275,7 @@
       for (let i = 1; i <= no; i++) {
         let name = $(`#name${i}`).val()
         let qty = $(`#qty${i}`).val()
-        let price = $(`#price${i}`).val()
+        let price =parseInt(($(`#price${i}`).val()).replace(/[^0-9]/g, ""))
         let total = parseInt(($(`#total${i}`).val()).replace(/[^0-9]/g, ""))
         let maks = $(`#maks${i}`).val()
         barang = [...barang, {
