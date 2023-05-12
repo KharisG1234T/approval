@@ -201,7 +201,7 @@
   function getTotalFromPrice(e) {
     const index = e.id.replace(/price/, "")
     const price = e.value.replace(/[^0-9]/g, "")
-    $(`#${e.id}`).val(formatRupiah(price))
+    $(`#${e.id}`).val(formatRupiah(price, "Rp. "))
     const qty = $(`#qty${index}`).val();
     const total = parseInt((qty ? qty : 0) * parseInt(price ? price : 0))
     $(`#total${index}`).val(formatRupiah(total.toString(), "Rp. "))
@@ -223,7 +223,7 @@
           <td><label>No.${no}</label></td> 
           <td><input type="text" id="name${no}" placeholder="Nama Barang" class="form-control" value="${item.nama}" required />
           </td> <td><input type="number" placeholder="QTY" id="qty${no}" onkeyup="getTotalFromQty(this)" class="form-control" value="${item.qty}" required /></td> 
-          <td><input type="text" placeholder="Harga Satuan" id="price${no}" onkeyup="getTotalFromPrice(this)" class="form-control" value="${formatRupiah(item.harga)}")}" required /></td> 
+          <td><input type="text" placeholder="Harga Satuan" id="price${no}" onkeyup="getTotalFromPrice(this)" class="form-control" value="${formatRupiah(item.harga, "Rp. ")}")}" required /></td> 
           <td><input type="text" placeholder="Total" id="total${no}" onchange="change()" readonly class="form-control" value="${formatRupiah(item.jumlah, "Rp. ")}" required /></td> 
           <td><input type="date" placeholder="Maks Delivery" id="maks${no}" class="form-control date" value="${item.maks_delivery}" required /></td> 
           ${(no == 1 ? `<td><button type="button" id="tambah" class="btn btn- btn-success">Add <i class="fas fa-fw fa-plus"></i></button></td>` : `<td> <button type="button" id="${no}" class="btn btn-danger btn_remove">Hapus</button></td>`)}
