@@ -200,7 +200,7 @@
   function getTotalFromQty(e) {
     const index = e.id.replace(/qty/, "")
     const qty = e.value;
-    const price = $(`#price${index}`).val();
+    const price = $(`#price${index}`).val().replace(/[^0-9]/g, "");
     const total = parseInt((qty ? qty : 0) * parseInt(price ? price : 0))
     $(`#total${index}`).val(formatRupiah(total.toString(), "Rp. "))
     change()
