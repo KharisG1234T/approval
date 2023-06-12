@@ -129,22 +129,22 @@
                         </tr>
                         <tr>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                           <td style="border-top: none">
-                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" class="img-thumbnail" width="200px">
+                            <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" style="width:100px!important; height:100px!important; padding: 10px!important;">
                           </td>
                         </tr>
                       </tbody>
@@ -163,7 +163,7 @@
               <div class="form-group row">
                 <div class="col col-md-1"></div>
                 <div class="col col-sm-12 col-md-6 col-lg-6">
-                  <p class="font-weight-bold" style="background-color: yellow;">Note : <?= $peminjaman['note'] ?></p>
+                  <p class="font-weight-bold" style="background-color: yellow; display: inline-block;">Note : <?= $peminjaman['note'] ?></p>
                 </div>
               </div>
 

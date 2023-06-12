@@ -23,7 +23,18 @@
 
   <!-- Jquery ajax -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <style>
+        * {
+            font-size: 10px !important;
+        }
 
+        td {
+          margin: 0px !important;
+          padding: 0px !important;
+          padding-left: 3px !important;
+        }
+
+    </style>
 </head>
 
 <body id="page-top">
@@ -40,29 +51,27 @@
   <div class="card" p="0" m="0">
     <div class="card-header bg-light">
       <div class="text-center">
-        <h6 class="font-weight-bold">FORM PEMINJAMAN DATA PUSAT</h6>
+        <h6 class="font-weight-bold" style="font-size: 18px!important;">FORM PEMINJAMAN DATA PUSAT</h6>
       </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
       <div class="card-body">
         <div class="form-group row ">
-          <div class="col col-sm-4 d-flex">
-
+          <div class="col col-sm-4">
             <small class="font-weight-bold">Kepada : <?= $peminjaman['nama_cabang'] ?></small>
-
           </div>
-          <div class="col col-sm-4  ml-auto">
+          <div class="col col-sm-4  ml-auto" style="margin-top:-50px">
             <small class="font-weight-bold ml-auto">Tgl : <?= date_format(date_create($peminjaman['date']), 'd/m/Y') ?></small>
           </div>
         </div>
         <div class="form-group row ">
-          <div class="col col-sm-4 col-md-4 col-lg-4 col-lg-4">
+          <div class="col col-sm-4">
             <div class="kosong">
               <small class="font-weight-bold">Dari : <?= $peminjaman['from_cb'] ?></small>
             </div>
           </div>
-          <div class="col col-sm-4 col-md-4 col-lg-4 col-lg-4 ml-auto">
+          <div class="col col-sm-4 ml-auto" style="margin-top:-50px">
             <div class="kosong">
               <small class="font-weight-bold">Nomor: <?= $peminjaman['number'] ?></small>
             </div>
@@ -70,7 +79,7 @@
         </div>
         <div class="form-group row mt-5">
           <div class="col col-11 ml-auto">
-            <p class="font-weight-bold">Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
+            <p class="font-weight-bold" style="margin-left: 45px;">Dengan ini mengajukan permohonan pemakaian stock barang dari CV. Solusi Arya Prima Pusat berupa :</p>
           </div>
         </div>
         <div class="form-group row">
@@ -121,15 +130,8 @@
 
         <div class="form-group row">
           <div class="col col-md-1"></div>
-          <div class="col col-sm-12 col-md-10 col-lg-4">
-            <div class="kosong">
-              <p style="border: solid 1px black;">Tanggal Maksimal Closing : <?= $peminjaman['closingdate'] ?></p>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col col-md-1"></div>
-          <div class="col col-12 col-md-10">
+          <div class="col col-12 col-md-10" style="width:80%!important; margin-left: 7.5%!important;">
+            <p style="border: solid 1px ; width: 30%;" >Tanggal Maksimal Closing : <?= $peminjaman['closingdate'] ?></p>
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead class="text-center font-weight-bold">
@@ -141,27 +143,27 @@
                 <tbody class="text-center">
                   <td class="p-0">
                     <p>Sales</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['sales']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                   <td>
                     <p>PM</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['pm']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                   <td>
                     <p>Koor Sales</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ks']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                   <td>
                     <p>Head Region</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['hr']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                   <td>
                     <p>Manager Sales</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['ms']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                   <td>
                     <p>Manger Operasional</p>
-                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" class="img-thumbnail" width="200px">
+                    <img src="<?= base_url('assets/img/profile/ttd/') . $peminjaman['approve']['mo']['ttd'] ?>" style="width:50px!important; height:50px!important; padding: 10px!important;">
                   </td>
                 </tbody>
                 <tfoot>
@@ -174,12 +176,7 @@
                 </tfoot>
               </table>
             </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col col-md-1"></div>
-          <div class="col col-sm-12 col-md-6 col-lg-6">
-            <p class="font-weight-bold" style="background-color: yellow;">Note : <?= $peminjaman['note'] ?></p>
+            <p class="font-weight-bold" style="background-color: yellow; display: inline-block;">Note : <?= $peminjaman['note'] ?></p>
           </div>
         </div>
       </div>

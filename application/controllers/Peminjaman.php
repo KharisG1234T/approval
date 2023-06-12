@@ -280,10 +280,20 @@ class Peminjaman extends CI_Controller
     $pdf = $this->load->view("peminjaman/print", $data, true);
 
     $dompdf = new Dompdf();
-    $dompdf->set_option('isRemoteEnabled', TRUE);
+
+    //mengatur opsi dompdf
+    $option = array(
+      'enable_css_parsing' => true,
+      'enable_javascript' => true,
+      'enable_remote' => true,
+      //tambah opsi lain disini
+    );
+    $dompdf->set_options($option);
+
+  
     $dompdf->loadHtml($pdf);
     // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('F4', 'landscape');
+    $dompdf->setPaper('A4', 'landscape');
     // Render the HTML as PDF
     $dompdf->render();
     // Output the generated PDF to Browser
@@ -309,7 +319,7 @@ class Peminjaman extends CI_Controller
     // hapus barang lama
     $barangLama = $this->Barangpeminjaman_model->getAllBy($idPeminjaman);
     foreach ($barangLama as $barang) {
-      $this->Barangpeminjaman_model->delete($barang['id']);
+      $this->Barangpeminjaman_model->delete($barang['id_bp']);
     }
 
     // update / tambah barang baru

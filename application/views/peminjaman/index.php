@@ -89,6 +89,10 @@ $user = $this->session->userdata();
                     <?php if (in_array($user['role_id'], array(1)) || ((in_array($user['role_id'], array(2)) && $item['status'] == "PENDING"))) { ?>
                       <a class="badge badge-danger" style="font-size:14px;" href="#!" onclick="deleteConfirm('<?= site_url('peminjaman/delete/' . $item['id_peminjaman']); ?>')"><i class="fas fa fa-trash"></i> Hapus</a>
                     <?php } ?>
+                    <!-- admin, sales -->
+                    <?php if (in_array($user['role_id'], array(1)) || ($item['status'] == "SUCCESS" && in_array($user['role_id'], array(1, 2)))) { ?>
+                      <a class="badge badge-secondary" style="font-size:14px;" target="_blank" href="<?= site_url('peminjaman/print/' . $item['id_peminjaman']); ?>"><i class="fas fa fa-print"></i> Cetak</a>
+                    <?php } ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

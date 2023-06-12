@@ -13,7 +13,7 @@ class Home extends CI_Controller {
     // index view web
     public function index()
     {
-        $data['title'] = 'Pusat Pengaduan';
+        $data['title'] = 'Form Approval';
 
         $this->load->view('templates/home_header', $data);
         $this->load->view('home/index');
